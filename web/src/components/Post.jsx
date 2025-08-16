@@ -1,10 +1,24 @@
 import { motion } from 'framer-motion'
+import { parseOrgSocialTimestamp } from '../utils/orgSocialParser'
 import './Post.css'
 
 function Post({ post, onProfileClick, allUsers }) {
   const formatTimestamp = (timestamp) => {
     try {
-      const date = new Date(timestamp)
+      // Try to use the pre-parsed date if available
+      let date
+      if (post.parsedDate) {
+        date = post.parsedDate
+      } else {
+        // Fallback to parsing the timestamp
+        date = parseOrgSocialTimestamp(timestamp) || new Date(timestamp)
+      }
+      
+      // Check if date is valid
+      if (!date || isNaN(date.getTime())) {
+        return 'invalid date'
+      }
+      
       const now = new Date()
       const diffMs = now - date
       const diffMinutes = Math.floor(diffMs / 60000)
@@ -21,8 +35,9 @@ function Post({ post, onProfileClick, allUsers }) {
         day: 'numeric',
         year: date.getFullYear() !== now.getFullYear() ? 'numeric' : undefined
       })
-    } catch {
-      return 'unknown'
+    } catch (error) {
+      console.warn('Error formatting timestamp:', timestamp, error)
+      return 'invalid date'
     }
   }
 
@@ -103,7 +118,11 @@ function Post({ post, onProfileClick, allUsers }) {
                 @{post.user.nick}
               </motion.span>
               <span className="post-separator">·</span>
-              <span className="post-timestamp" title={new Date(post.timestamp).toLocaleString()}>
+              <span className="post-timestamp" title={
+                post.parsedDate 
+                  ? post.parsedDate.toLocaleString() 
+                  : (parseOrgSocialTimestamp(post.timestamp) || new Date(post.timestamp)).toLocaleString()
+              }>
                 {formatTimestamp(post.timestamp)}
               </span>
             </div>
