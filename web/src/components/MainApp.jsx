@@ -57,7 +57,37 @@ function MainApp({ url, onBack }) {
       })
       
       // Sort by timestamp (newest first)
-      posts.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+      
+      // Check if we have any valid dates to sort by
+      const hasValidDates = posts.some(p => {
+        const date = p.parsedDate || new Date(p.timestamp)
+        return !isNaN(date.getTime())
+      })
+      
+      if (hasValidDates) {
+        // Sort by date when we have valid dates
+        posts.sort((a, b) => {
+          const dateA = a.parsedDate || new Date(a.timestamp)
+          const dateB = b.parsedDate || new Date(b.timestamp)
+          
+          const isValidA = !isNaN(dateA.getTime())
+          const isValidB = !isNaN(dateB.getTime())
+          
+          if (!isValidA && !isValidB) {
+            return 0 // Both invalid, maintain order
+          } else if (!isValidA) {
+            return 1 // A invalid, B valid - B comes first
+          } else if (!isValidB) {
+            return -1 // A valid, B invalid - A comes first
+          } else {
+            return dateB.getTime() - dateA.getTime() // Both valid, newest first
+          }
+        })
+      } else {
+        // No valid dates - assume posts are in chronological order (oldest first)
+        // and reverse them to get reverse chronological order (newest first)
+        posts.reverse()
+      }
       
       setAllPosts(posts)
       

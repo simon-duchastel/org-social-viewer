@@ -8,6 +8,32 @@
  * - Rich content with org-mode formatting
  */
 
+/**
+ * Parse RFC 3339 timestamp strings as used in org-social ID fields
+ * Supports formats: YYYY-MM-DDTHH:MM:SS+HH:MM and YYYY-MM-DDTHH:MM:SS-HH:MM
+ */
+function parseOrgSocialTimestamp(timestamp) {
+  if (!timestamp) return null
+  
+  try {
+    // The Date constructor should handle RFC 3339 format correctly,
+    // but let's ensure proper parsing by normalizing the format
+    const normalizedTimestamp = timestamp.trim()
+    const date = new Date(normalizedTimestamp)
+    
+    // Check if the date is valid
+    if (isNaN(date.getTime())) {
+      console.warn('Invalid timestamp format:', timestamp)
+      return null
+    }
+    
+    return date
+  } catch (error) {
+    console.warn('Error parsing timestamp:', timestamp, error)
+    return null
+  }
+}
+
 export function parseOrgSocial(text, sourceUrl = '') {
   const lines = text.split('\n')
   const user = {
@@ -163,7 +189,15 @@ function finalizeParsedPost(post, properties, user) {
   
   // Set timestamp from ID
   if (properties.ID) {
-    post.timestamp = properties.ID
+    const parsedDate = parseOrgSocialTimestamp(properties.ID)
+    if (parsedDate) {
+      post.timestamp = parsedDate.toISOString()
+      post.parsedDate = parsedDate
+    } else {
+      // Fallback to raw ID if parsing fails
+      post.timestamp = properties.ID
+      post.parsedDate = null
+    }
     post.id = properties.ID
   }
   
@@ -318,3 +352,5 @@ export async function fetchFollowedUsers(mainUser) {
   
   return followedUsers
 }
+
+export { parseOrgSocialTimestamp }

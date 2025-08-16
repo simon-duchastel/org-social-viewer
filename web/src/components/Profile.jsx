@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { parseOrgSocialTimestamp } from '../utils/orgSocialParser'
 import Post from './Post'
 import './Profile.css'
 
@@ -17,11 +18,16 @@ function Profile({ user, posts, onProfileClick, allUsers }) {
 
   const formatDate = (dateString) => {
     try {
-      return new Date(dateString).toLocaleDateString('en-US', {
+      const date = parseOrgSocialTimestamp(dateString) || new Date(dateString)
+      if (!date || isNaN(date.getTime())) {
+        return 'Date unknown'
+      }
+      return date.toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'long'
       })
-    } catch {
+    } catch (error) {
+      console.warn('Error formatting date:', dateString, error)
       return 'Date unknown'
     }
   }
