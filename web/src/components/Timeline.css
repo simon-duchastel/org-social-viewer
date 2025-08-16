@@ -1,0 +1,154 @@
+.timeline {
+  min-height: 100vh;
+  padding-bottom: 2rem;
+}
+
+.timeline-content {
+  width: 100%;
+}
+
+.timeline-post {
+  border-bottom: 1px solid var(--twitter-border);
+  transition: all 0.2s ease;
+}
+
+.timeline-post:hover {
+  background-color: var(--twitter-hover-bg);
+}
+
+.timeline-post:last-child {
+  border-bottom: none;
+}
+
+.timeline-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  padding: 2rem;
+}
+
+.empty-state {
+  text-align: center;
+  max-width: 400px;
+  padding: 2rem;
+  background: var(--twitter-elevated-bg);
+  border-radius: 16px;
+  border: 1px solid var(--twitter-border);
+}
+
+.empty-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  opacity: 0.7;
+}
+
+.empty-state h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--twitter-text);
+  margin-bottom: 0.5rem;
+}
+
+.empty-state p {
+  color: var(--twitter-secondary-text);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.timeline-loading {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+  border-bottom: 1px solid var(--twitter-border);
+}
+
+.timeline-end {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+  margin-top: 1rem;
+}
+
+.end-message {
+  text-align: center;
+  padding: 1.5rem;
+  background: var(--twitter-elevated-bg);
+  border-radius: 12px;
+  border: 1px solid var(--twitter-border);
+  max-width: 300px;
+}
+
+.end-message span {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.end-message p {
+  font-weight: 600;
+  color: var(--twitter-text);
+  margin: 0 0 0.5rem 0;
+}
+
+.end-message small {
+  color: var(--twitter-secondary-text);
+  font-size: 0.875rem;
+}
+
+/* Smooth scrolling */
+.timeline {
+  scroll-behavior: smooth;
+}
+
+/* Loading animations */
+@keyframes shimmer {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+}
+
+.timeline-loading .loading-text {
+  background: linear-gradient(
+    90deg,
+    var(--twitter-secondary-text) 0px,
+    var(--twitter-text) 40px,
+    var(--twitter-secondary-text) 80px
+  );
+  background-size: 200px;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 600px) {
+  .timeline {
+    padding-bottom: 1rem;
+  }
+  
+  .empty-state {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+  
+  .empty-icon {
+    font-size: 3rem;
+  }
+  
+  .empty-state h3 {
+    font-size: 1.25rem;
+  }
+  
+  .timeline-loading {
+    padding: 1.5rem;
+  }
+  
+  .timeline-end {
+    padding: 1.5rem;
+  }
+}
