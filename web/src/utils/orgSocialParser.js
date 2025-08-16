@@ -40,15 +40,15 @@ export function parseOrgSocial(text, sourceUrl = '') {
 
     // Parse global metadata
     if (trimmedLine.startsWith('#+TITLE:')) {
-      user.title = trimmedLine.split(':', 1)[1]?.trim() || ''
+      user.title = trimmedLine.substring(trimmedLine.indexOf(':') + 1).trim()
     } else if (trimmedLine.startsWith('#+NICK:')) {
-      user.nick = trimmedLine.split(':', 1)[1]?.trim() || ''
+      user.nick = trimmedLine.substring(trimmedLine.indexOf(':') + 1).trim()
     } else if (trimmedLine.startsWith('#+DESCRIPTION:')) {
-      user.description = trimmedLine.split(':', 1)[1]?.trim() || ''
+      user.description = trimmedLine.substring(trimmedLine.indexOf(':') + 1).trim()
     } else if (trimmedLine.startsWith('#+AVATAR:')) {
-      user.avatar = trimmedLine.split(':', 1)[1]?.trim() || ''
+      user.avatar = trimmedLine.substring(trimmedLine.indexOf(':') + 1).trim()
     } else if (trimmedLine.startsWith('#+LINK:')) {
-      const link = trimmedLine.split(':', 1)[1]?.trim()
+      const link = trimmedLine.substring(trimmedLine.indexOf(':') + 1).trim()
       if (link) user.links.push(link)
     } else if (trimmedLine.startsWith('#+FOLLOW:')) {
       const parts = trimmedLine.split(/\s+/).slice(1) // Remove #+FOLLOW:
@@ -58,7 +58,7 @@ export function parseOrgSocial(text, sourceUrl = '') {
         user.follows.push({ nick, url })
       }
     } else if (trimmedLine.startsWith('#+CONTACT:')) {
-      const contact = trimmedLine.split(':', 1)[1]?.trim()
+      const contact = trimmedLine.substring(trimmedLine.indexOf(':') + 1).trim()
       if (contact) user.contacts.push(contact)
     }
 
