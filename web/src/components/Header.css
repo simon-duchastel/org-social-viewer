@@ -1,0 +1,139 @@
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--twitter-border);
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  max-width: 100%;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.back-btn {
+  padding: 0.5rem;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: var(--twitter-text);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.back-btn:hover {
+  background: var(--twitter-hover-bg);
+}
+
+.back-icon {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.header-title {
+  min-width: 0;
+  flex: 1;
+}
+
+.header-title h1 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--twitter-text);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.subtitle {
+  font-size: 0.875rem;
+  color: var(--twitter-secondary-text);
+  font-weight: 400;
+  display: block;
+  margin-top: -0.2rem;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.refresh-btn {
+  padding: 0.5rem;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: var(--twitter-text);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.refresh-btn:hover {
+  background: var(--twitter-hover-bg);
+}
+
+.refresh-icon {
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.header-user {
+  display: flex;
+  align-items: center;
+}
+
+.header-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid var(--twitter-border);
+  transition: all 0.2s ease;
+}
+
+.header-avatar:hover {
+  border-color: var(--twitter-blue);
+  transform: scale(1.05);
+}
+
+@media (max-width: 480px) {
+  .header-content {
+    padding: 0.5rem 1rem;
+  }
+  
+  .header-title h1 {
+    font-size: 1.1rem;
+  }
+  
+  .subtitle {
+    font-size: 0.8rem;
+  }
+  
+  .header-avatar {
+    width: 28px;
+    height: 28px;
+  }
+}
