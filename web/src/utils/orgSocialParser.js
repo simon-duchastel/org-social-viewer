@@ -260,39 +260,81 @@ function processOrgContent(content) {
   return processed
 }
 
-export async function fetchOrgSocial(url) {
-  try {
-    let fetchUrl = url
-    let corsProxy = false
-    
-    // Check if it's an external URL that might need CORS proxy
-    if (url.startsWith('http') && !url.startsWith(window.location.origin)) {
-      corsProxy = true
-      fetchUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`
-    }
-    
-    const response = await fetch(fetchUrl)
-    
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}: ${response.statusText}`)
-    }
-    
-    let text
-    if (corsProxy) {
-      const data = await response.json()
-      if (data.status.http_code !== 200) {
-        throw new Error(`HTTP ${data.status.http_code}: Failed to fetch org-social file`)
-      }
-      text = data.contents
-    } else {
-      text = await response.text()
-    }
-    
-    return parseOrgSocial(text, url)
-  } catch (error) {
-    console.error('Error fetching org-social file:', error)
-    throw error
+const CORS_PROXIES = [
+  {
+    name: 'allorigins',
+    url: (targetUrl) => `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`,
+    parseResponse: (data) => data.contents
+  },
+  {
+    name: 'corsproxy',
+    url: (targetUrl) => `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`,
+    parseResponse: (data) => data
+  },
+  {
+    name: 'cors-anywhere',
+    url: (targetUrl) => `https://cors-anywhere.herokuapp.com/${targetUrl}`,
+    parseResponse: (data) => data
   }
+]
+
+export async function fetchOrgSocial(url) {
+  // Check if it's a local URL that doesn't need CORS proxy
+  if (!url.startsWith('http') || url.startsWith(window.location.origin)) {
+    try {
+      const response = await fetch(url)
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`)
+      }
+      const text = await response.text()
+      return parseOrgSocial(text, url)
+    } catch (error) {
+      console.error('Error fetching local org-social file:', error)
+      throw error
+    }
+  }
+
+  // For external URLs, try multiple CORS proxies
+  let lastError = null
+  
+  for (const proxy of CORS_PROXIES) {
+    try {
+      const fetchUrl = proxy.url(url)
+      const response = await fetch(fetchUrl)
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`)
+      }
+      
+      let text
+      if (proxy.name === 'allorigins') {
+        const data = await response.json()
+        if (data.status.http_code !== 200) {
+          throw new Error(`HTTP ${data.status.http_code}: Failed to fetch org-social file`)
+        }
+        text = proxy.parseResponse(data)
+      } else {
+        text = await response.text()
+      }
+      
+      // Handle base64-encoded data URIs that some CORS proxies return
+      if (text.startsWith('data:') && text.includes('base64,')) {
+        const base64Content = text.split('base64,')[1]
+        text = atob(base64Content)
+      }
+      
+      return parseOrgSocial(text, url)
+      
+    } catch (error) {
+      console.warn(`Failed to fetch ${url} using ${proxy.name} proxy:`, error.message)
+      lastError = error
+      continue
+    }
+  }
+  
+  // If all proxies failed, throw the last error
+  console.error(`All CORS proxies failed for ${url}`)
+  throw lastError || new Error('Failed to fetch org-social file: All CORS proxies failed')
 }
 
 export async function fetchFollowedUsers(mainUser) {
