@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { parseOrgSocialTimestamp } from '../utils/orgSocialParser'
+import { parseOrgSocialTimestamp } from '../utils/dateUtils'
 import Post from './Post'
 import './Profile.css'
 
