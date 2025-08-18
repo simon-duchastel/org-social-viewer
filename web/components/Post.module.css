@@ -1,0 +1,405 @@
+.post {
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.1s ease;
+  position: relative;
+}
+
+.post:hover {
+  background-color: var(--twitter-hover-bg);
+}
+
+.postReply {
+  padding-left: 3rem;
+}
+
+.replyIndicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  color: var(--twitter-secondary-text);
+  font-size: 0.875rem;
+  position: relative;
+}
+
+.replyLine {
+  position: absolute;
+  left: 1.5rem;
+  top: -0.75rem;
+  bottom: 0;
+  width: 2px;
+  background-color: var(--twitter-border);
+}
+
+.replyIcon {
+  font-size: 1rem;
+  margin-left: 1.5rem;
+}
+
+.replyText {
+  font-size: 0.875rem;
+}
+
+.postMain {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.postAvatar {
+  flex-shrink: 0;
+}
+
+.postAvatar img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.postAvatar img:hover {
+  filter: brightness(0.9);
+}
+
+.postContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.postHeader {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.postUserInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.postDisplayName {
+  font-weight: 700;
+  color: var(--twitter-text);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.postDisplayName:hover {
+  text-decoration: underline;
+}
+
+.postUsername {
+  color: var(--twitter-secondary-text);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.postUsername:hover {
+  color: var(--twitter-blue);
+}
+
+.postSeparator {
+  color: var(--twitter-secondary-text);
+}
+
+.postTimestamp {
+  color: var(--twitter-secondary-text);
+  font-size: 0.875rem;
+  cursor: default;
+}
+
+.postMetadata {
+  display: flex;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
+.postLang,
+.postClient {
+  background: var(--twitter-elevated-bg);
+  color: var(--twitter-secondary-text);
+  padding: 0.125rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  border: 1px solid var(--twitter-border);
+}
+
+.contentWarning {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 173, 31, 0.1);
+  border: 1px solid var(--twitter-warning);
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.875rem;
+  color: var(--twitter-warning);
+}
+
+.warningIcon {
+  font-size: 1rem;
+}
+
+.postBody {
+  margin-bottom: 0.75rem;
+  line-height: 1.5;
+  word-wrap: break-word;
+}
+
+.postContentHtml {
+  color: var(--twitter-text);
+}
+
+.postContentHtml strong {
+  font-weight: 700;
+}
+
+.postContentHtml em {
+  font-style: italic;
+}
+
+.postContentHtml code {
+  background: var(--twitter-elevated-bg);
+  border: 1px solid var(--twitter-border);
+  border-radius: 4px;
+  padding: 0.125rem 0.25rem;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 0.875rem;
+}
+
+.postContentHtml a {
+  color: var(--twitter-blue);
+  text-decoration: none;
+}
+
+.postContentHtml a:hover {
+  text-decoration: underline;
+}
+
+.postContentHtml .mention {
+  color: var(--twitter-blue);
+  background: rgba(29, 155, 240, 0.1);
+  border-radius: 4px;
+  padding: 0.125rem 0.25rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.postContentHtml .mention:hover {
+  background: var(--twitter-blue);
+  color: white;
+}
+
+.postContentText {
+  color: var(--twitter-text);
+  white-space: pre-wrap;
+}
+
+.pollOptions {
+  background: var(--twitter-elevated-bg);
+  border: 1px solid var(--twitter-border);
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.pollOption {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.pollOption:hover {
+  background: var(--twitter-hover-bg);
+  border-radius: 8px;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.pollOption.checked {
+  color: var(--twitter-blue);
+  font-weight: 600;
+}
+
+.pollCheckbox {
+  font-size: 1.1rem;
+}
+
+.pollText {
+  flex: 1;
+}
+
+.pollEnd {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--twitter-border);
+  font-size: 0.875rem;
+  color: var(--twitter-secondary-text);
+}
+
+.postMentions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.mention {
+  background: rgba(29, 155, 240, 0.1);
+  color: var(--twitter-blue);
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border: 1px solid rgba(29, 155, 240, 0.2);
+}
+
+.mention:hover {
+  background: var(--twitter-blue);
+  color: white;
+  transform: translateY(-1px);
+}
+
+.postTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.tag {
+  color: var(--twitter-blue);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.tag:hover {
+  text-decoration: underline;
+}
+
+.postMood {
+  margin-bottom: 0.5rem;
+}
+
+.moodIcon {
+  font-size: 1.25rem;
+  padding: 0.25rem;
+  background: var(--twitter-elevated-bg);
+  border-radius: 50%;
+  border: 1px solid var(--twitter-border);
+}
+
+.postActions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
+  max-width: 425px;
+}
+
+.actionBtn {
+  background: none;
+  border: none;
+  color: var(--twitter-secondary-text);
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  min-height: 34px;
+}
+
+.actionBtn:hover {
+  background: rgba(29, 155, 240, 0.1);
+}
+
+.replyBtn:hover {
+  background: rgba(29, 155, 240, 0.1);
+  color: var(--twitter-blue);
+}
+
+.repostBtn:hover {
+  background: rgba(0, 186, 124, 0.1);
+  color: var(--twitter-success);
+}
+
+.likeBtn:hover {
+  background: rgba(244, 33, 46, 0.1);
+  color: var(--twitter-error);
+}
+
+.shareBtn:hover {
+  background: rgba(29, 155, 240, 0.1);
+  color: var(--twitter-blue);
+}
+
+.actionIcon {
+  font-size: 1rem;
+  filter: grayscale(100%);
+  transition: filter 0.15s ease;
+}
+
+.actionBtn:hover .actionIcon {
+  filter: grayscale(0%);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 600px) {
+  .post {
+    padding: 0.75rem 1rem;
+  }
+  
+  .postMain {
+    gap: 0.5rem;
+  }
+  
+  .postAvatar img {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .postUserInfo {
+    gap: 0.25rem;
+  }
+  
+  .postDisplayName {
+    font-size: 0.9rem;
+  }
+  
+  .postUsername {
+    font-size: 0.85rem;
+  }
+  
+  .postTimestamp {
+    font-size: 0.8rem;
+  }
+  
+  .postActions {
+    gap: 0.5rem;
+    margin-top: 0.25rem;
+  }
+  
+  .actionBtn {
+    padding: 0.375rem;
+    min-width: 30px;
+    min-height: 30px;
+  }
+  
+  .actionIcon {
+    font-size: 0.9rem;
+  }
+}

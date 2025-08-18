@@ -1,0 +1,139 @@
+.appHeader {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--twitter-border);
+}
+
+.headerContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  max-width: 100%;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.backBtn {
+  padding: 0.5rem;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: var(--twitter-text);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.backBtn:hover {
+  background: var(--twitter-hover-bg);
+}
+
+.backIcon {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.headerTitle {
+  min-width: 0;
+  flex: 1;
+}
+
+.headerTitle h1 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--twitter-text);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.subtitle {
+  font-size: 0.875rem;
+  color: var(--twitter-secondary-text);
+  font-weight: 400;
+  display: block;
+  margin-top: -0.2rem;
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.refreshBtn {
+  padding: 0.5rem;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: var(--twitter-text);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.refreshBtn:hover {
+  background: var(--twitter-hover-bg);
+}
+
+.refreshIcon {
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.headerUser {
+  display: flex;
+  align-items: center;
+}
+
+.headerAvatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid var(--twitter-border);
+  transition: all 0.2s ease;
+}
+
+.headerAvatar:hover {
+  border-color: var(--twitter-blue);
+  transform: scale(1.05);
+}
+
+@media (max-width: 480px) {
+  .headerContent {
+    padding: 0.5rem 1rem;
+  }
+  
+  .headerTitle h1 {
+    font-size: 1.1rem;
+  }
+  
+  .subtitle {
+    font-size: 0.8rem;
+  }
+  
+  .headerAvatar {
+    width: 28px;
+    height: 28px;
+  }
+}
