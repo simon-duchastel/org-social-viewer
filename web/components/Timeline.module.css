@@ -1,23 +1,16 @@
 .timeline {
   min-height: 100vh;
-  padding-bottom: 2rem;
+  background: var(--twitter-bg);
+  padding: 0;
 }
 
 .timelineContent {
-  width: 100%;
+  max-width: 100%;
+  padding: 1rem;
 }
 
 .timelinePost {
-  border-bottom: 1px solid var(--twitter-border);
-  transition: all 0.2s ease;
-}
-
-.timelinePost:hover {
-  background-color: var(--twitter-hover-bg);
-}
-
-.timelinePost:last-child {
-  border-bottom: none;
+  margin-bottom: 0;
 }
 
 .timelineEmpty {
@@ -35,105 +28,88 @@
   background: var(--twitter-elevated-bg);
   border-radius: 16px;
   border: 1px solid var(--twitter-border);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .emptyIcon {
   font-size: 4rem;
   margin-bottom: 1rem;
-  opacity: 0.7;
+  opacity: 0.6;
 }
 
 .emptyState h3 {
+  color: var(--twitter-text);
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--twitter-text);
   margin-bottom: 0.5rem;
 }
 
 .emptyState p {
   color: var(--twitter-secondary-text);
   line-height: 1.5;
-  margin: 0;
+  font-size: 1rem;
 }
 
 .timelineLoading {
   display: flex;
   justify-content: center;
   padding: 2rem;
-  border-bottom: 1px solid var(--twitter-border);
+  margin: 1rem 0;
 }
 
 .timelineEnd {
-  display: flex;
-  justify-content: center;
+  text-align: center;
   padding: 2rem;
-  margin-top: 1rem;
+  margin: 2rem 0;
 }
 
 .endMessage {
-  text-align: center;
-  padding: 1.5rem;
   background: var(--twitter-elevated-bg);
-  border-radius: 12px;
   border: 1px solid var(--twitter-border);
-  max-width: 300px;
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 400px;
+  margin: 0 auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .endMessage span {
   font-size: 2rem;
   display: block;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 .endMessage p {
-  font-weight: 600;
   color: var(--twitter-text);
-  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
 }
 
 .endMessage small {
   color: var(--twitter-secondary-text);
-  font-size: 0.875rem;
+  font-size: 0.9rem;
 }
 
-/* Smooth scrolling */
-.timeline {
-  scroll-behavior: smooth;
+/* Virtual scrolling and performance optimizations */
+.timelineContent {
+  contain: layout;
+  will-change: transform;
 }
 
-/* Loading animations */
-@keyframes shimmer {
-  0% {
-    background-position: -200px 0;
-  }
-  100% {
-    background-position: calc(200px + 100%) 0;
-  }
-}
-
-.timelineLoading .loadingText {
-  background: linear-gradient(
-    90deg,
-    var(--twitter-secondary-text) 0px,
-    var(--twitter-text) 40px,
-    var(--twitter-secondary-text) 80px
-  );
-  background-size: 200px;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: shimmer 1.5s infinite;
+.timelinePost {
+  contain: layout style;
 }
 
 /* Mobile responsiveness */
-@media (max-width: 600px) {
-  .timeline {
-    padding-bottom: 1rem;
+@media (max-width: 768px) {
+  .timelineContent {
+    padding: 0.75rem;
   }
   
   .emptyState {
-    margin: 1rem;
     padding: 1.5rem;
+    margin: 1rem;
   }
   
   .emptyIcon {
@@ -141,14 +117,38 @@
   }
   
   .emptyState h3 {
-    font-size: 1.25rem;
+    font-size: 1.3rem;
+  }
+  
+  .emptyState p {
+    font-size: 0.95rem;
+  }
+  
+  .endMessage {
+    padding: 1.5rem;
+    margin: 1rem;
+  }
+  
+  .endMessage span {
+    font-size: 1.5rem;
+  }
+  
+  .endMessage p {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .timelineContent {
+    padding: 0.5rem;
+  }
+  
+  .emptyState, .endMessage {
+    padding: 1rem;
+    margin: 0.5rem;
   }
   
   .timelineLoading {
-    padding: 1.5rem;
-  }
-  
-  .timelineEnd {
-    padding: 1.5rem;
+    padding: 1rem;
   }
 }

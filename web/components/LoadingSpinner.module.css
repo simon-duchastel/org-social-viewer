@@ -2,16 +2,18 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  min-height: 200px;
   padding: 2rem;
 }
 
-.loadingSpinnerContainer.normal {
-  min-height: 60vh;
+.loadingSpinnerContainer.small {
+  min-height: 80px;
+  padding: 1rem;
 }
 
-.loadingSpinnerContainer.small {
-  min-height: auto;
-  padding: 1rem;
+.loadingSpinnerContainer.large {
+  min-height: 400px;
+  padding: 3rem;
 }
 
 .loadingContent {
@@ -19,30 +21,32 @@
   flex-direction: column;
   align-items: center;
   gap: 1rem;
+  text-align: center;
 }
 
 .spinner {
   position: relative;
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
 }
 
-.loadingSpinnerContainer.small .spinner {
-  width: 24px;
-  height: 24px;
+.small .spinner {
+  width: 32px;
+  height: 32px;
+}
+
+.large .spinner {
+  width: 64px;
+  height: 64px;
 }
 
 .spinnerCircle {
   width: 100%;
   height: 100%;
-  border: 3px solid rgba(29, 155, 240, 0.2);
+  border: 3px solid var(--twitter-border);
   border-top: 3px solid var(--twitter-blue);
   border-radius: 50%;
   position: relative;
-}
-
-.loadingSpinnerContainer.small .spinnerCircle {
-  border-width: 2px;
 }
 
 .spinnerCircle::before {
@@ -52,56 +56,165 @@
   left: -3px;
   right: -3px;
   bottom: -3px;
-  border: 1px solid rgba(29, 155, 240, 0.1);
+  border: 2px solid transparent;
+  border-top: 2px solid rgba(29, 155, 240, 0.3);
   border-radius: 50%;
+  animation: spinReverse 2s linear infinite;
 }
 
 .loadingMessage {
-  color: var(--twitter-secondary-text);
-  font-size: 0.95rem;
-  text-align: center;
-  margin: 0;
+  color: var(--twitter-text);
+  font-size: 1rem;
   font-weight: 500;
+  margin: 0;
+  line-height: 1.4;
 }
 
-.loadingSpinnerContainer.small .loadingMessage {
-  font-size: 0.875rem;
+.small .loadingMessage {
+  font-size: 0.9rem;
 }
 
-/* Pulsing animation for the message */
-.loadingMessage {
-  animation: pulse 2s infinite;
+.large .loadingMessage {
+  font-size: 1.1rem;
+}
+
+/* Pulse effect for the container */
+.loadingContent {
+  animation: pulse 2s ease-in-out infinite;
 }
 
 @keyframes pulse {
   0%, 100% {
-    opacity: 0.8;
-  }
-  50% {
     opacity: 1;
   }
+  50% {
+    opacity: 0.8;
+  }
 }
 
-/* Alternative loading states */
-.loadingDots {
-  display: flex;
-  gap: 0.25rem;
-  align-items: center;
+@keyframes spinReverse {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
 }
 
-.loadingDots::after {
+/* Enhanced spinner with gradient */
+.spinner::after {
   content: '';
-  animation: dots 1.5s infinite;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  background: var(--twitter-blue);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 10px rgba(29, 155, 240, 0.5);
 }
 
-@keyframes dots {
-  0%, 20% {
-    content: '.';
+.small .spinner::after {
+  width: 6px;
+  height: 6px;
+}
+
+.large .spinner::after {
+  width: 10px;
+  height: 10px;
+}
+
+/* Loading shimmer effect */
+.loadingContent::before {
+  content: '';
+  position: absolute;
+  top: -100%;
+  left: -100%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent,
+    rgba(29, 155, 240, 0.1),
+    transparent
+  );
+  animation: shimmer 3s infinite;
+  pointer-events: none;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
   }
-  40% {
-    content: '..';
+  100% {
+    transform: translateX(100%);
   }
-  60%, 100% {
-    content: '...';
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .spinner,
+  .spinnerCircle::before,
+  .loadingContent {
+    animation: none;
+  }
+  
+  .spinner {
+    border-top-color: var(--twitter-blue);
+  }
+}
+
+/* Dark mode enhancements */
+@media (prefers-color-scheme: dark) {
+  .spinner::after {
+    box-shadow: 0 0 15px rgba(29, 155, 240, 0.7);
+  }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .loadingSpinnerContainer {
+    min-height: 150px;
+    padding: 1.5rem;
+  }
+  
+  .loadingSpinnerContainer.large {
+    min-height: 300px;
+    padding: 2rem;
+  }
+  
+  .spinner {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .large .spinner {
+    width: 56px;
+    height: 56px;
+  }
+  
+  .loadingMessage {
+    font-size: 0.9rem;
+  }
+  
+  .large .loadingMessage {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .loadingSpinnerContainer {
+    min-height: 120px;
+    padding: 1rem;
+  }
+  
+  .spinner {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .loadingMessage {
+    font-size: 0.85rem;
   }
 }

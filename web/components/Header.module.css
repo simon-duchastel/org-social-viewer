@@ -2,18 +2,20 @@
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(0, 0, 0, 0.8);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: var(--twitter-elevated-bg);
   border-bottom: 1px solid var(--twitter-border);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .headerContent {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.75rem 1rem;
+  padding: 1rem;
   max-width: 100%;
+  margin: 0 auto;
+  min-height: 60px;
 }
 
 .headerLeft {
@@ -24,33 +26,67 @@
   min-width: 0;
 }
 
-.backBtn {
-  padding: 0.5rem;
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.btn {
   background: none;
   border: none;
   color: var(--twitter-text);
   cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+  border-radius: 50%;
+  padding: 0.75rem;
   transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  position: relative;
+  overflow: hidden;
 }
 
-.backBtn:hover {
-  background: var(--twitter-hover-bg);
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--twitter-blue);
+  border-radius: 50%;
+  transform: scale(0);
+  transition: transform 0.3s ease;
+  opacity: 0.1;
+}
+
+.btn:hover::before {
+  transform: scale(1);
+}
+
+.btn:hover {
+  background-color: var(--twitter-hover-bg);
+  color: var(--twitter-blue);
+}
+
+.backBtn {
+  margin-right: 0.5rem;
 }
 
 .backIcon {
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   font-weight: bold;
+  line-height: 1;
+}
+
+.refreshIcon {
+  font-size: 1.25rem;
+  font-weight: bold;
+  line-height: 1;
 }
 
 .headerTitle {
-  min-width: 0;
   flex: 1;
+  min-width: 0;
 }
 
 .headerTitle h1 {
@@ -58,70 +94,101 @@
   font-weight: 700;
   color: var(--twitter-text);
   margin: 0;
+  line-height: 1.2;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .subtitle {
-  font-size: 0.875rem;
+  font-size: 0.85rem;
   color: var(--twitter-secondary-text);
   font-weight: 400;
   display: block;
-  margin-top: -0.2rem;
+  margin-top: 0.1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .headerRight {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-}
-
-.refreshBtn {
-  padding: 0.5rem;
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: none;
-  border: none;
-  color: var(--twitter-text);
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.refreshBtn:hover {
-  background: var(--twitter-hover-bg);
-}
-
-.refreshIcon {
-  font-size: 1.1rem;
-  font-weight: bold;
+  flex-shrink: 0;
 }
 
 .headerUser {
   display: flex;
   align-items: center;
+  position: relative;
 }
 
 .headerAvatar {
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   border: 2px solid var(--twitter-border);
   transition: all 0.2s ease;
+  object-fit: cover;
+  cursor: pointer;
 }
 
 .headerAvatar:hover {
   border-color: var(--twitter-blue);
   transform: scale(1.05);
+  box-shadow: 0 0 0 3px rgba(29, 155, 240, 0.1);
 }
 
-@media (max-width: 480px) {
+/* Loading state for refresh button */
+.refreshBtn[data-loading="true"] .refreshIcon {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Special styling for different header states */
+.appHeader[data-view="profile"] {
+  background: linear-gradient(135deg, var(--twitter-elevated-bg) 0%, rgba(29, 155, 240, 0.05) 100%);
+}
+
+.appHeader[data-view="timeline"] {
+  background: var(--twitter-elevated-bg);
+}
+
+/* Focus styles for accessibility */
+.btn:focus {
+  outline: 2px solid var(--twitter-blue);
+  outline-offset: 2px;
+}
+
+.headerAvatar:focus {
+  outline: 2px solid var(--twitter-blue);
+  outline-offset: 2px;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
   .headerContent {
-    padding: 0.5rem 1rem;
+    padding: 0.75rem 1rem;
+    min-height: 56px;
+  }
+  
+  .btn {
+    padding: 0.65rem;
+    min-width: 40px;
+    min-height: 40px;
+  }
+  
+  .backIcon, .refreshIcon {
+    font-size: 1.1rem;
   }
   
   .headerTitle h1 {
@@ -133,7 +200,83 @@
   }
   
   .headerAvatar {
-    width: 28px;
-    height: 28px;
+    width: 36px;
+    height: 36px;
+  }
+  
+  .headerRight {
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .headerContent {
+    padding: 0.5rem 0.75rem;
+    min-height: 52px;
+  }
+  
+  .btn {
+    padding: 0.5rem;
+    min-width: 36px;
+    min-height: 36px;
+  }
+  
+  .backIcon, .refreshIcon {
+    font-size: 1rem;
+  }
+  
+  .headerTitle h1 {
+    font-size: 1rem;
+  }
+  
+  .subtitle {
+    font-size: 0.75rem;
+  }
+  
+  .headerAvatar {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .headerLeft {
+    gap: 0.75rem;
+  }
+  
+  .headerRight {
+    gap: 0.4rem;
+  }
+}
+
+/* Dark mode enhancements */
+@media (prefers-color-scheme: dark) {
+  .appHeader {
+    border-bottom-color: rgba(47, 51, 54, 0.8);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  .headerAvatar,
+  .appHeader {
+    transition: none;
+  }
+  
+  .btn:hover {
+    transform: none;
+  }
+  
+  .headerAvatar:hover {
+    transform: none;
+  }
+  
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
   }
 }
