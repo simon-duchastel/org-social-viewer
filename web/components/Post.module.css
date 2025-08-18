@@ -1,0 +1,507 @@
+.post {
+  background: var(--twitter-elevated-bg);
+  border: 1px solid var(--twitter-border);
+  border-radius: 12px;
+  padding: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.post::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(45deg, var(--twitter-blue), #00d4ff);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.post:hover::before {
+  transform: scaleX(1);
+}
+
+.post:hover {
+  border-color: var(--twitter-blue);
+  box-shadow: 0 4px 12px rgba(29, 155, 240, 0.1);
+  transform: translateY(-1px);
+}
+
+.postReply {
+  margin-left: 2rem;
+  border-left: 3px solid var(--twitter-blue);
+  border-radius: 0 12px 12px 0;
+}
+
+.postPoll {
+  border: 2px solid var(--twitter-warning);
+  background: rgba(255, 173, 31, 0.03);
+}
+
+.replyIndicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  color: var(--twitter-secondary-text);
+  font-size: 0.85rem;
+  padding-left: 3rem;
+  position: relative;
+}
+
+.replyLine {
+  position: absolute;
+  left: 1.75rem;
+  top: -1rem;
+  width: 2px;
+  height: 1rem;
+  background: var(--twitter-border);
+}
+
+.replyIcon {
+  color: var(--twitter-blue);
+  font-weight: bold;
+}
+
+.replyText {
+  font-style: italic;
+}
+
+.postMain {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+
+.postAvatar {
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.postAvatar img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid var(--twitter-border);
+  transition: border-color 0.2s ease;
+  object-fit: cover;
+}
+
+.postAvatar:hover img {
+  border-color: var(--twitter-blue);
+}
+
+.postContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.postHeader {
+  margin-bottom: 0.5rem;
+}
+
+.postUserInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.postDisplayName {
+  font-weight: 700;
+  color: var(--twitter-text);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.postDisplayName:hover {
+  color: var(--twitter-blue);
+}
+
+.postUsername {
+  color: var(--twitter-secondary-text);
+  cursor: pointer;
+  transition: color 0.2s ease;
+  font-size: 0.9rem;
+}
+
+.postUsername:hover {
+  color: var(--twitter-blue);
+}
+
+.postSeparator {
+  color: var(--twitter-secondary-text);
+  font-weight: bold;
+}
+
+.postTimestamp {
+  color: var(--twitter-secondary-text);
+  font-size: 0.85rem;
+  cursor: help;
+}
+
+.postMetadata {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.25rem;
+  font-size: 0.8rem;
+}
+
+.postLang {
+  background: var(--twitter-blue);
+  color: white;
+  padding: 0.15rem 0.4rem;
+  border-radius: 6px;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+}
+
+.postClient {
+  color: var(--twitter-secondary-text);
+  font-style: italic;
+}
+
+.contentWarning {
+  background: rgba(244, 33, 46, 0.1);
+  border: 1px solid rgba(244, 33, 46, 0.3);
+  border-radius: 8px;
+  padding: 0.75rem;
+  margin: 0.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--twitter-error);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.warningIcon {
+  font-size: 1.1rem;
+}
+
+.postBody {
+  line-height: 1.5;
+  margin: 0.75rem 0;
+}
+
+.postContentHtml {
+  color: var(--twitter-text);
+}
+
+.postContentHtml a {
+  color: var(--twitter-blue);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.postContentHtml a:hover {
+  color: var(--twitter-dark-blue);
+  text-decoration: underline;
+}
+
+.postContentHtml strong {
+  font-weight: 700;
+  color: var(--twitter-text);
+}
+
+.postContentHtml em {
+  font-style: italic;
+  color: var(--twitter-text);
+}
+
+.postContentHtml code {
+  background: var(--twitter-border);
+  padding: 0.15rem 0.3rem;
+  border-radius: 4px;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 0.85rem;
+}
+
+.postContentHtml .mention {
+  background: var(--twitter-blue);
+  color: white;
+  padding: 0.15rem 0.4rem;
+  border-radius: 6px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.postContentHtml .mention:hover {
+  background: var(--twitter-dark-blue);
+  transform: scale(1.05);
+}
+
+.postContentText {
+  color: var(--twitter-text);
+  white-space: pre-wrap;
+}
+
+.pollOptions {
+  background: var(--twitter-hover-bg);
+  border-radius: 8px;
+  padding: 0.75rem;
+  margin: 0.75rem 0;
+  border: 1px solid var(--twitter-border);
+}
+
+.pollOption {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+  transition: all 0.2s ease;
+  border-radius: 6px;
+  margin: 0.25rem 0;
+  cursor: pointer;
+}
+
+.pollOption:hover {
+  background: var(--twitter-elevated-bg);
+  padding-left: 0.75rem;
+}
+
+.pollOption.checked {
+  background: rgba(29, 155, 240, 0.1);
+  border: 1px solid var(--twitter-blue);
+  font-weight: 600;
+}
+
+.pollCheckbox {
+  font-size: 1.1rem;
+  transition: transform 0.2s ease;
+}
+
+.pollOption:hover .pollCheckbox {
+  transform: scale(1.1);
+}
+
+.pollText {
+  flex: 1;
+}
+
+.pollEnd {
+  text-align: center;
+  color: var(--twitter-secondary-text);
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--twitter-border);
+  font-style: italic;
+}
+
+.postMentions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.75rem 0;
+}
+
+.mention {
+  background: var(--twitter-blue);
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mention:hover {
+  background: var(--twitter-dark-blue);
+  transform: scale(1.05);
+}
+
+.postTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.75rem 0;
+}
+
+.tag {
+  color: var(--twitter-blue);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0.15rem 0.3rem;
+  border-radius: 6px;
+  background: rgba(29, 155, 240, 0.1);
+}
+
+.tag:hover {
+  background: rgba(29, 155, 240, 0.2);
+  transform: scale(1.05);
+}
+
+.postMood {
+  margin: 0.5rem 0;
+  text-align: center;
+}
+
+.moodIcon {
+  font-size: 1.5rem;
+  padding: 0.5rem;
+  background: var(--twitter-hover-bg);
+  border-radius: 50%;
+  border: 2px solid var(--twitter-border);
+}
+
+.postActions {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--twitter-border);
+  gap: 1rem;
+}
+
+.actionBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  min-height: 36px;
+  color: var(--twitter-secondary-text);
+}
+
+.actionBtn:hover {
+  background: var(--twitter-hover-bg);
+  transform: scale(1.1);
+}
+
+.actionIcon {
+  font-size: 1.1rem;
+  transition: transform 0.2s ease;
+}
+
+.actionBtn:active .actionIcon {
+  transform: scale(0.9);
+}
+
+.replyBtn:hover {
+  background: rgba(29, 155, 240, 0.1);
+  color: var(--twitter-blue);
+}
+
+.repostBtn:hover {
+  background: rgba(0, 186, 124, 0.1);
+  color: var(--twitter-success);
+}
+
+.likeBtn:hover {
+  background: rgba(244, 33, 46, 0.1);
+  color: var(--twitter-error);
+}
+
+.shareBtn:hover {
+  background: rgba(29, 155, 240, 0.1);
+  color: var(--twitter-blue);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .post {
+    padding: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .postReply {
+    margin-left: 1rem;
+  }
+  
+  .postMain {
+    gap: 0.5rem;
+  }
+  
+  .postAvatar img {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .postUserInfo {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+  
+  .postDisplayName, .postUsername {
+    font-size: 0.9rem;
+  }
+  
+  .postTimestamp {
+    font-size: 0.8rem;
+  }
+  
+  .postActions {
+    gap: 0.5rem;
+  }
+  
+  .actionBtn {
+    min-width: 32px;
+    min-height: 32px;
+    padding: 0.4rem;
+  }
+  
+  .actionIcon {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .post {
+    padding: 0.5rem;
+    border-radius: 8px;
+  }
+  
+  .postReply {
+    margin-left: 0.5rem;
+  }
+  
+  .replyIndicator {
+    padding-left: 2rem;
+  }
+  
+  .postBody {
+    font-size: 0.9rem;
+  }
+  
+  .postMentions, .postTags {
+    gap: 0.25rem;
+  }
+  
+  .mention, .tag {
+    font-size: 0.8rem;
+    padding: 0.2rem 0.4rem;
+  }
+  
+  .pollOptions {
+    padding: 0.5rem;
+  }
+  
+  .actionBtn {
+    min-width: 28px;
+    min-height: 28px;
+    padding: 0.3rem;
+  }
+  
+  .actionIcon {
+    font-size: 0.9rem;
+  }
+}

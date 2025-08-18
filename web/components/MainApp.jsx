@@ -1,6 +1,7 @@
+'use client'
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { fetchOrgSocial, fetchFollowedUsers } from '../utils/orgSocialParser'
+import { fetchOrgSocial, fetchFollowedUsers } from '../utils/apiClient'
 import Header from './Header'
 import Timeline from './Timeline'
 import Profile from './Profile'

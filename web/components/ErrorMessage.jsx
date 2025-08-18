@@ -1,17 +1,18 @@
+'use client'
 import { motion } from 'framer-motion'
-import './ErrorMessage.css'
+import styles from './ErrorMessage.module.css'
 
 function ErrorMessage({ message, onRetry, onBack, showRetry = true, showBack = true }) {
   return (
-    <div className="error-message-container">
+    <div className={styles.errorMessageContainer}>
       <motion.div 
-        className="error-content"
+        className={styles.errorContent}
         initial={{ opacity: 0, scale: 0.9, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ duration: 0.4, ease: "easeOut" }}
       >
         <motion.div 
-          className="error-icon"
+          className={styles.errorIcon}
           animate={{ 
             rotate: [0, -10, 10, -10, 0],
             scale: [1, 1.1, 1]
@@ -25,39 +26,39 @@ function ErrorMessage({ message, onRetry, onBack, showRetry = true, showBack = t
           ⚠️
         </motion.div>
         
-        <h3 className="error-title">Something went wrong</h3>
+        <h3 className={styles.errorTitle}>Something went wrong</h3>
         
-        <p className="error-text">{message}</p>
+        <p className={styles.errorText}>{message}</p>
         
-        <div className="error-actions">
+        <div className={styles.errorActions}>
           {showRetry && onRetry && (
             <motion.button 
-              className="btn btn-primary"
+              className={`${styles.btn} ${styles.btnPrimary}`}
               onClick={onRetry}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <span className="btn-icon">🔄</span>
+              <span className={styles.btnIcon}>🔄</span>
               Try Again
             </motion.button>
           )}
           
           {showBack && onBack && (
             <motion.button 
-              className="btn"
+              className={styles.btn}
               onClick={onBack}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <span className="btn-icon">←</span>
+              <span className={styles.btnIcon}>←</span>
               Go Back
             </motion.button>
           )}
         </div>
         
-        <details className="error-details">
+        <details className={styles.errorDetails}>
           <summary>Technical Details</summary>
-          <div className="error-details-content">
+          <div className={styles.errorDetailsContent}>
             <p><strong>Error:</strong> {message}</p>
             <p><strong>Time:</strong> {new Date().toLocaleString()}</p>
             <p><strong>Suggestion:</strong> Check your internet connection and ensure the org-social file URL is accessible.</p>

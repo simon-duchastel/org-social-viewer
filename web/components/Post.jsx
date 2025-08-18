@@ -1,10 +1,25 @@
+'use client'
 import { motion } from 'framer-motion'
-import './Post.css'
+import { parseOrgSocialTimestamp } from '../utils/dateUtils'
+import styles from './Post.module.css'
 
 function Post({ post, onProfileClick, allUsers }) {
   const formatTimestamp = (timestamp) => {
     try {
-      const date = new Date(timestamp)
+      // Try to use the pre-parsed date if available
+      let date
+      if (post.parsedDate) {
+        date = post.parsedDate
+      } else {
+        // Fallback to parsing the timestamp
+        date = parseOrgSocialTimestamp(timestamp) || new Date(timestamp)
+      }
+      
+      // Check if date is valid
+      if (!date || isNaN(date.getTime())) {
+        return 'invalid date'
+      }
+      
       const now = new Date()
       const diffMs = now - date
       const diffMinutes = Math.floor(diffMs / 60000)
@@ -21,8 +36,9 @@ function Post({ post, onProfileClick, allUsers }) {
         day: 'numeric',
         year: date.getFullYear() !== now.getFullYear() ? 'numeric' : undefined
       })
-    } catch {
-      return 'unknown'
+    } catch (error) {
+      console.warn('Error formatting timestamp:', timestamp, error)
+      return 'invalid date'
     }
   }
 
@@ -33,14 +49,14 @@ function Post({ post, onProfileClick, allUsers }) {
     if (content.includes('<')) {
       return (
         <div 
-          className="post-content-html"
+          className={styles.postContentHtml}
           dangerouslySetInnerHTML={{ __html: content }}
         />
       )
     }
     
     // Fallback for plain text
-    return <div className="post-content-text">{content}</div>
+    return <div className={styles.postContentText}>{content}</div>
   }
 
   const handleProfileClick = (e) => {
@@ -59,22 +75,22 @@ function Post({ post, onProfileClick, allUsers }) {
 
   return (
     <motion.article 
-      className={`post ${post.isReply ? 'post-reply' : ''} ${post.isPoll ? 'post-poll' : ''}`}
+      className={`${styles.post} ${post.isReply ? styles.postReply : ''} ${post.isPoll ? styles.postPoll : ''}`}
       onClick={handlePostClick}
       whileHover={{ backgroundColor: 'var(--twitter-hover-bg)' }}
       transition={{ duration: 0.1 }}
     >
       {post.isReply && (
-        <div className="reply-indicator">
-          <div className="reply-line"></div>
-          <span className="reply-icon">↳</span>
-          <span className="reply-text">Replying to post</span>
+        <div className={styles.replyIndicator}>
+          <div className={styles.replyLine}></div>
+          <span className={styles.replyIcon}>↳</span>
+          <span className={styles.replyText}>Replying to post</span>
         </div>
       )}
 
-      <div className="post-main">
+      <div className={styles.postMain}>
         <motion.div 
-          className="post-avatar"
+          className={styles.postAvatar}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
@@ -85,62 +101,66 @@ function Post({ post, onProfileClick, allUsers }) {
           />
         </motion.div>
 
-        <div className="post-content">
-          <div className="post-header">
-            <div className="post-user-info">
+        <div className={styles.postContent}>
+          <div className={styles.postHeader}>
+            <div className={styles.postUserInfo}>
               <motion.span 
-                className="post-display-name"
+                className={styles.postDisplayName}
                 onClick={handleProfileClick}
                 whileHover={{ textDecoration: 'underline' }}
               >
                 {post.user.title || post.user.nick}
               </motion.span>
               <motion.span 
-                className="post-username"
+                className={styles.postUsername}
                 onClick={handleProfileClick}
                 whileHover={{ color: 'var(--twitter-blue)' }}
               >
                 @{post.user.nick}
               </motion.span>
-              <span className="post-separator">·</span>
-              <span className="post-timestamp" title={new Date(post.timestamp).toLocaleString()}>
+              <span className={styles.postSeparator}>·</span>
+              <span className={styles.postTimestamp} title={
+                post.parsedDate 
+                  ? post.parsedDate.toLocaleString() 
+                  : (parseOrgSocialTimestamp(post.timestamp) || new Date(post.timestamp)).toLocaleString()
+              }>
                 {formatTimestamp(post.timestamp)}
               </span>
             </div>
 
             {(post.properties.LANG || post.properties.CLIENT) && (
-              <div className="post-metadata">
+              <div className={styles.postMetadata}>
                 {post.properties.LANG && (
-                  <span className="post-lang">{post.properties.LANG}</span>
+                  <span className={styles.postLang}>{post.properties.LANG}</span>
                 )}
                 {post.properties.CLIENT && (
-                  <span className="post-client">via {post.properties.CLIENT}</span>
+                  <span className={styles.postClient}>via {post.properties.CLIENT}</span>
                 )}
               </div>
             )}
           </div>
 
           {post.properties.CONTENT_WARNING && (
-            <div className="content-warning">
-              <span className="warning-icon">⚠️</span>
+            <div className={styles.contentWarning}>
+              <span className={styles.warningIcon}>⚠️</span>
               <span>Content Warning: {post.properties.CONTENT_WARNING}</span>
             </div>
           )}
 
-          <div className="post-body">
+          <div className={styles.postBody}>
             {renderContent(post.displayContent || post.content)}
           </div>
 
           {post.isPoll && post.checkboxes && post.checkboxes.length > 0 && (
-            <div className="poll-options">
+            <div className={styles.pollOptions}>
               {post.checkboxes.map((option, index) => (
-                <div key={index} className={`poll-option ${option.checked ? 'checked' : ''}`}>
-                  <span className="poll-checkbox">{option.checked ? '☑️' : '☐'}</span>
-                  <span className="poll-text">{option.text}</span>
+                <div key={index} className={`${styles.pollOption} ${option.checked ? styles.checked : ''}`}>
+                  <span className={styles.pollCheckbox}>{option.checked ? '☑️' : '☐'}</span>
+                  <span className={styles.pollText}>{option.text}</span>
                 </div>
               ))}
               {post.properties.POLL_END && (
-                <div className="poll-end">
+                <div className={styles.pollEnd}>
                   Ends: {formatTimestamp(post.properties.POLL_END)}
                 </div>
               )}
@@ -148,11 +168,11 @@ function Post({ post, onProfileClick, allUsers }) {
           )}
 
           {post.mentions && post.mentions.length > 0 && (
-            <div className="post-mentions">
+            <div className={styles.postMentions}>
               {post.mentions.map((mention, index) => (
                 <motion.span 
                   key={index} 
-                  className="mention"
+                  className={styles.mention}
                   whileHover={{ backgroundColor: 'var(--twitter-blue)', color: 'white' }}
                   onClick={(e) => {
                     e.stopPropagation()
@@ -172,49 +192,49 @@ function Post({ post, onProfileClick, allUsers }) {
           )}
 
           {post.properties.TAGS && (
-            <div className="post-tags">
+            <div className={styles.postTags}>
               {post.properties.TAGS.split(' ').map((tag, index) => (
-                <span key={index} className="tag">#{tag}</span>
+                <span key={index} className={styles.tag}>#{tag}</span>
               ))}
             </div>
           )}
 
           {post.properties.MOOD && (
-            <div className="post-mood">
-              <span className="mood-icon">{post.properties.MOOD}</span>
+            <div className={styles.postMood}>
+              <span className={styles.moodIcon}>{post.properties.MOOD}</span>
             </div>
           )}
 
-          <div className="post-actions">
+          <div className={styles.postActions}>
             <motion.button 
-              className="action-btn reply-btn"
+              className={`${styles.actionBtn} ${styles.replyBtn}`}
               whileHover={{ scale: 1.1, color: 'var(--twitter-blue)' }}
               whileTap={{ scale: 0.9 }}
               onClick={(e) => e.stopPropagation()}
             >
-              <span className="action-icon">💬</span>
+              <span className={styles.actionIcon}>💬</span>
             </motion.button>
 
             <motion.button 
-              className="action-btn repost-btn"
+              className={`${styles.actionBtn} ${styles.repostBtn}`}
               whileHover={{ scale: 1.1, color: 'var(--twitter-success)' }}
               whileTap={{ scale: 0.9 }}
               onClick={(e) => e.stopPropagation()}
             >
-              <span className="action-icon">🔄</span>
+              <span className={styles.actionIcon}>🔄</span>
             </motion.button>
 
             <motion.button 
-              className="action-btn like-btn"
+              className={`${styles.actionBtn} ${styles.likeBtn}`}
               whileHover={{ scale: 1.1, color: 'var(--twitter-error)' }}
               whileTap={{ scale: 0.9 }}
               onClick={(e) => e.stopPropagation()}
             >
-              <span className="action-icon">❤️</span>
+              <span className={styles.actionIcon}>❤️</span>
             </motion.button>
 
             <motion.button 
-              className="action-btn share-btn"
+              className={`${styles.actionBtn} ${styles.shareBtn}`}
               whileHover={{ scale: 1.1, color: 'var(--twitter-blue)' }}
               whileTap={{ scale: 0.9 }}
               onClick={(e) => {
@@ -223,7 +243,7 @@ function Post({ post, onProfileClick, allUsers }) {
                 navigator.clipboard.writeText(url)
               }}
             >
-              <span className="action-icon">📤</span>
+              <span className={styles.actionIcon}>📤</span>
             </motion.button>
           </div>
         </div>

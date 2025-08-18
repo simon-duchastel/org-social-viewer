@@ -1,8 +1,9 @@
+'use client'
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import Post from './Post'
 import LoadingSpinner from './LoadingSpinner'
-import './Timeline.css'
+import styles from './Timeline.module.css'
 
 const POSTS_PER_PAGE = 20
 
@@ -61,14 +62,14 @@ function Timeline({ posts, users, onProfileClick }) {
 
   if (posts.length === 0) {
     return (
-      <div className="timeline-empty">
+      <div className={styles.timelineEmpty}>
         <motion.div 
-          className="empty-state"
+          className={styles.emptyState}
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.4 }}
         >
-          <div className="empty-icon">📝</div>
+          <div className={styles.emptyIcon}>📝</div>
           <h3>No posts found</h3>
           <p>This org-social feed doesn't have any posts yet, or they couldn't be loaded.</p>
         </motion.div>
@@ -77,9 +78,9 @@ function Timeline({ posts, users, onProfileClick }) {
   }
 
   return (
-    <div className="timeline" ref={timelineRef}>
+    <div className={styles.timeline} ref={timelineRef}>
       <motion.div 
-        className="timeline-content"
+        className={styles.timelineContent}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.4 }}
@@ -97,7 +98,7 @@ function Timeline({ posts, users, onProfileClick }) {
                 duration: 0.3, 
                 delay: index < 10 ? index * 0.05 : 0 // Stagger first 10 posts
               }}
-              className="timeline-post"
+              className={styles.timelinePost}
             >
               <Post 
                 post={post}
@@ -109,19 +110,19 @@ function Timeline({ posts, users, onProfileClick }) {
         })}
         
         {loading && (
-          <div className="timeline-loading">
+          <div className={styles.timelineLoading}>
             <LoadingSpinner size="small" message="Loading more posts..." />
           </div>
         )}
         
         {!hasMore && displayedPosts.length > 0 && (
           <motion.div 
-            className="timeline-end"
+            className={styles.timelineEnd}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.4 }}
           >
-            <div className="end-message">
+            <div className={styles.endMessage}>
               <span>🎉</span>
               <p>You've reached the end of the timeline!</p>
               <small>Showing {displayedPosts.length} of {posts.length} posts</small>

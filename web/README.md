@@ -1,6 +1,6 @@
 # Org Social Viewer - Web Application
 
-A React-based web application for viewing and interacting with org-mode social media content.
+A Next.js-based web application for viewing and interacting with org-mode social media content.
 
 ## Features
 
@@ -12,9 +12,10 @@ A React-based web application for viewing and interacting with org-mode social m
 
 ## Technology Stack
 
-- **React 18** with Vite for fast development
+- **Next.js 14** with React 18 for modern web development
+- **CSS Modules** for component-scoped styling
+- **Framer Motion** for smooth animations
 - **Modern ES6+** JavaScript
-- **CSS3** with component-scoped styling
 - **Org-mode Parser** for processing social media content
 
 ## Getting Started
@@ -37,25 +38,27 @@ npm install
 npm run dev
 ```
 
-The application will be available at `http://localhost:5173`
+The application will be available at `http://localhost:3000`
 
 ### Build
 
 ```bash
 npm run build
+npm run start
 ```
 
 ## Project Structure
 
 ```
 web/
-├── src/
-│   ├── components/     # React components
-│   ├── hooks/         # Custom React hooks
-│   ├── utils/         # Utility functions
-│   └── main.jsx       # Application entry point
-├── package.json       # Dependencies and scripts
-└── vite.config.js     # Vite configuration
+├── app/
+│   ├── layout.js      # Root layout
+│   ├── page.js        # Home page
+│   └── globals.css    # Global styles
+├── components/        # React components
+├── utils/            # Utility functions
+├── package.json      # Dependencies and scripts
+└── next.config.js    # Next.js configuration
 ```
 
 ## Usage
