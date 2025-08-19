@@ -9,7 +9,11 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Main user is required' }, { status: 400 })
     }
 
-    const result = await fetchFollowedUsers(mainUser)
+    // Get the base URL from the request
+    const url = new URL(request.url)
+    const baseUrl = `${url.protocol}//${url.host}`
+
+    const result = await fetchFollowedUsers(mainUser, baseUrl)
     return NextResponse.json(result)
   } catch (error) {
     console.error('Fetch followed users error:', error)

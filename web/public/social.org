@@ -1,11 +1,11 @@
-#+TITLE: Simon's Social Feed	
-#+NICK: simond	
-#+DESCRIPTION: Software developer interested in org-mode and social media integration	
-#+AVATAR: https://example.com/avatar.jpg	
-#+LINK: https://github.com/simon-duchastel	
-#+FOLLOW: alice https://raw.githubusercontent.com/alice/dotfiles/main/social.org	
-#+FOLLOW: bob https://raw.githubusercontent.com/bob/dotfiles/main/social.org	
-#+CONTACT: simon@example.com	
+#+TITLE: Simon's Social Feed
+#+NICK: simond
+#+DESCRIPTION: Software developer interested in org-mode and social media integration
+#+AVATAR: /avatar-simon.svg
+#+LINK: https://github.com/simon-duchastel
+#+FOLLOW: alice/alice-social.org
+#+FOLLOW: bob/bob-social.org
+#+CONTACT: simon@example.com
 
 * Posts	
 
@@ -33,6 +33,7 @@ Check out the features:
 - Easy to use	
 - Well documented	
 
+<<<<<<< HEAD:test-social.org
 ** Reply to Alice's question	
 :PROPERTIES:	
 :ID: 2024-12-03T09:15:00Z	
@@ -42,6 +43,17 @@ Check out the features:
 :END:	
 
 [[org-social:https://raw.githubusercontent.com/alice/dotfiles/main/social.org][Alice]] Great question! Here's what I think about that topic.	
+=======
+** Reply to Alice's question
+:PROPERTIES:
+:ID: 2024-12-03T09:15:00Z
+:LANG: en
+:REPLY_TO: 2024-12-02T18:00:00Z
+:REPLY_URL: /alice-social.org
+:END:
+
+[[org-social:/alice-social.org][Alice]] Great question! Here's what I think about that topic.
+>>>>>>> main:web/public/social.org
 
 * Polls	
 

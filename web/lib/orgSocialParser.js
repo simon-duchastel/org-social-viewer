@@ -461,23 +461,41 @@ export async function fetchOrgSocial(url) {
     const text = await response.text()
     return parseOrgSocial(text, url)
   } catch (error) {
-    console.error('Error fetching org-social file:', error)
-    throw error
+    // Provide more specific error information
+    if (error.message.includes('404')) {
+      throw new Error(`File not found: ${url}`)
+    } else if (error.message.includes('Failed to fetch')) {
+      throw new Error(`Network error accessing: ${url}`)
+    } else {
+      throw new Error(`Error fetching org-social file from ${url}: ${error.message}`)
+    }
   }
 }
 
 /**
  * Fetch followed users
  */
-export async function fetchFollowedUsers(mainUser) {
+export async function fetchFollowedUsers(mainUser, baseUrl = '') {
   const followedUsers = []
   const promises = mainUser.follows.map(async (follow) => {
     try {
-      const user = await fetchOrgSocial(follow.url)
+      // Convert relative URLs to absolute URLs
+      let url = follow.url
+      if (baseUrl && url.startsWith('/')) {
+        url = baseUrl + url
+      }
+      
+      const user = await fetchOrgSocial(url)
       user.followInfo = follow
       return user
     } catch (error) {
-      console.error(`Failed to fetch ${follow.url}:`, error)
+      // Silently handle failed fetches for followed users
+      // This is expected when follow URLs point to non-existent files
+      if (error.message.includes('404')) {
+        console.debug(`Follow URL not found (expected for demo): ${follow.url}`)
+      } else {
+        console.warn(`Failed to fetch followed user ${follow.nick} (${follow.url}):`, error.message)
+      }
       return null
     }
   })
