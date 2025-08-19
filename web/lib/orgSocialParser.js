@@ -384,11 +384,17 @@ export async function fetchOrgSocial(url) {
 /**
  * Fetch followed users
  */
-export async function fetchFollowedUsers(mainUser) {
+export async function fetchFollowedUsers(mainUser, baseUrl = '') {
   const followedUsers = []
   const promises = mainUser.follows.map(async (follow) => {
     try {
-      const user = await fetchOrgSocial(follow.url)
+      // Convert relative URLs to absolute URLs
+      let url = follow.url
+      if (baseUrl && url.startsWith('/')) {
+        url = baseUrl + url
+      }
+      
+      const user = await fetchOrgSocial(url)
       user.followInfo = follow
       return user
     } catch (error) {
