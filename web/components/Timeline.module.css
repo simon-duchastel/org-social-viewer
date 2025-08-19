@@ -1,0 +1,154 @@
+.timeline {
+  min-height: 100vh;
+  background: var(--twitter-bg);
+  padding: 0;
+}
+
+.timelineContent {
+  max-width: 100%;
+  padding: 1rem;
+}
+
+.timelinePost {
+  margin-bottom: 0;
+}
+
+.timelineEmpty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  padding: 2rem;
+}
+
+.emptyState {
+  text-align: center;
+  max-width: 400px;
+  padding: 2rem;
+  background: var(--twitter-elevated-bg);
+  border-radius: 16px;
+  border: 1px solid var(--twitter-border);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.emptyIcon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  opacity: 0.6;
+}
+
+.emptyState h3 {
+  color: var(--twitter-text);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.emptyState p {
+  color: var(--twitter-secondary-text);
+  line-height: 1.5;
+  font-size: 1rem;
+}
+
+.timelineLoading {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+  margin: 1rem 0;
+}
+
+.timelineEnd {
+  text-align: center;
+  padding: 2rem;
+  margin: 2rem 0;
+}
+
+.endMessage {
+  background: var(--twitter-elevated-bg);
+  border: 1px solid var(--twitter-border);
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 400px;
+  margin: 0 auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.endMessage span {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.endMessage p {
+  color: var(--twitter-text);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.endMessage small {
+  color: var(--twitter-secondary-text);
+  font-size: 0.9rem;
+}
+
+/* Virtual scrolling and performance optimizations */
+.timelineContent {
+  contain: layout;
+  will-change: transform;
+}
+
+.timelinePost {
+  contain: layout style;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .timelineContent {
+    padding: 0.75rem;
+  }
+  
+  .emptyState {
+    padding: 1.5rem;
+    margin: 1rem;
+  }
+  
+  .emptyIcon {
+    font-size: 3rem;
+  }
+  
+  .emptyState h3 {
+    font-size: 1.3rem;
+  }
+  
+  .emptyState p {
+    font-size: 0.95rem;
+  }
+  
+  .endMessage {
+    padding: 1.5rem;
+    margin: 1rem;
+  }
+  
+  .endMessage span {
+    font-size: 1.5rem;
+  }
+  
+  .endMessage p {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .timelineContent {
+    padding: 0.5rem;
+  }
+  
+  .emptyState, .endMessage {
+    padding: 1rem;
+    margin: 0.5rem;
+  }
+  
+  .timelineLoading {
+    padding: 1rem;
+  }
+}

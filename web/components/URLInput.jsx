@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import './URLInput.css'
+import styles from './URLInput.module.css'
 
 function URLInput({ onUrlSubmit }) {
   const [url, setUrl] = useState('')
@@ -41,16 +41,16 @@ function URLInput({ onUrlSubmit }) {
   }
 
   return (
-    <div className="url-input-container">
+    <div className={styles.urlInputContainer}>
       <motion.div 
-        className="url-input-content"
+        className={styles.urlInputContent}
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.4, ease: "easeOut" }}
       >
-        <div className="logo">
+        <div className={styles.logo}>
           <motion.div 
-            className="logo-icon"
+            className={styles.logoIcon}
             animate={{ 
               rotate: 360,
               scale: [1, 1.1, 1]
@@ -65,18 +65,18 @@ function URLInput({ onUrlSubmit }) {
           <h1>Org-Social Viewer</h1>
         </div>
         
-        <p className="description">
+        <p className={styles.description}>
           Enter the URL of an org-social file to start exploring decentralized social networks
         </p>
 
-        <form onSubmit={handleSubmit} className="url-form">
-          <div className="input-group">
+        <form onSubmit={handleSubmit} className={styles.urlForm}>
+          <div className={styles.inputGroup}>
             <input
               type="url"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
               placeholder="https://example.com/social.org"
-              className="url-input"
+              className={styles.urlInput}
               disabled={isLoading}
               autoFocus
             />
@@ -89,7 +89,7 @@ function URLInput({ onUrlSubmit }) {
             >
               {isLoading ? (
                 <motion.div 
-                  className="loading-spinner"
+                  className={styles.loadingSpinner}
                   animate={{ rotate: 360 }}
                   transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                 >
@@ -103,7 +103,7 @@ function URLInput({ onUrlSubmit }) {
           
           {error && (
             <motion.div 
-              className="error-message"
+              className={styles.errorMessage}
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.2 }}
@@ -113,26 +113,26 @@ function URLInput({ onUrlSubmit }) {
           )}
         </form>
 
-        <div className="examples">
+        <div className={styles.examples}>
           <h3>Try these examples:</h3>
-          <div className="example-urls">
+          <div className={styles.exampleUrls}>
             <button 
               type="button"
-              className="example-url"
+              className={styles.exampleUrl}
               onClick={() => setUrl('./social.org')}
             >
               ./social.org (local example)
             </button>
             <button 
               type="button"
-              className="example-url"
+              className={styles.exampleUrl}
               onClick={() => setUrl('https://andros.dev/static/social.org')}
             >
               andros.dev/static/social.org (Org-Social creator)
             </button>
             <button 
               type="button"
-              className="example-url"
+              className={styles.exampleUrl}
               onClick={() => setUrl('https://rossabaker.com/social.org')}
             >
               rossabaker.com/social.org
@@ -140,7 +140,7 @@ function URLInput({ onUrlSubmit }) {
           </div>
         </div>
 
-        <div className="info">
+        <div className={styles.info}>
           <h3>What is Org-Social?</h3>
           <p>
             Org-Social is a decentralized social network built on simple Org Mode files. 

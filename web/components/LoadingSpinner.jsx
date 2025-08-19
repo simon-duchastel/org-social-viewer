@@ -1,17 +1,18 @@
+'use client'
 import { motion } from 'framer-motion'
-import './LoadingSpinner.css'
+import styles from './LoadingSpinner.module.css'
 
 function LoadingSpinner({ message = "Loading...", size = "normal" }) {
   return (
-    <div className={`loading-spinner-container ${size}`}>
+    <div className={`${styles.loadingSpinnerContainer} ${styles[size]}`}>
       <motion.div 
-        className="loading-content"
+        className={styles.loadingContent}
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.3 }}
       >
         <motion.div 
-          className="spinner"
+          className={styles.spinner}
           animate={{ rotate: 360 }}
           transition={{ 
             duration: 1,
@@ -19,12 +20,12 @@ function LoadingSpinner({ message = "Loading...", size = "normal" }) {
             ease: "linear"
           }}
         >
-          <div className="spinner-circle"></div>
+          <div className={styles.spinnerCircle}></div>
         </motion.div>
         
         {message && (
           <motion.p 
-            className="loading-message"
+            className={styles.loadingMessage}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}

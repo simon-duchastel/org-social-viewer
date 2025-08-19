@@ -1,19 +1,20 @@
+'use client'
 import { motion } from 'framer-motion'
 import { parseOrgSocialTimestamp } from '../utils/dateUtils'
 import Post from './Post'
-import './Profile.css'
+import styles from './Profile.module.css'
 
 function Profile({ user, posts, onProfileClick, allUsers }) {
   if (!user) {
     return (
-      <div className="profile-error">
+      <div className={styles.profileError}>
         <p>User not found</p>
       </div>
     )
   }
 
   const getAvatarUrl = (user) => {
-    return user.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.nick}`
+    return user.avatar || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiByeD0iMjAiIGZpbGw9IiNFNUU3RUIiLz4KPHBhdGggZD0iTTEyIDEyQzkuNzkgMTIgOCAxMC4yMSA4IDhTOS43OSA0IDEyIDRTMTYgNS43OSAxNiA4UzE0LjIxIDEyIDEyIDEyWk0xMiAxNEMxNi40MiAxNCAyMCAxNS43OSAyMCAyMFYyMkg0VjIwQzQgMTUuNzkgNy41OCAxNCAxMiAxNFoiIGZpbGw9IiM5Q0E0QUYiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDgsIDgpIi8+Cjwvc3ZnPgo='
   }
 
   const formatDate = (dateString) => {
@@ -46,41 +47,41 @@ function Profile({ user, posts, onProfileClick, allUsers }) {
 
   return (
     <motion.div 
-      className="profile"
+      className={styles.profile}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
     >
       {/* Profile Header */}
-      <div className="profile-header">
-        <div className="profile-banner">
+      <div className={styles.profileHeader}>
+        <div className={styles.profileBanner}>
           {/* Could add banner image here */}
         </div>
         
-        <div className="profile-info">
+        <div className={styles.profileInfo}>
           <motion.div 
-            className="profile-avatar-container"
+            className={styles.profileAvatarContainer}
             whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.2 }}
           >
             <img 
               src={getAvatarUrl(user)} 
               alt={`${user.nick}'s avatar`}
-              className="profile-avatar"
+              className={styles.profileAvatar}
             />
           </motion.div>
           
-          <div className="profile-details">
-            <div className="profile-names">
-              <h1 className="profile-display-name">
+          <div className={styles.profileDetails}>
+            <div className={styles.profileNames}>
+              <h1 className={styles.profileDisplayName}>
                 {user.title || user.nick}
               </h1>
-              <p className="profile-username">@{user.nick}</p>
+              <p className={styles.profileUsername}>@{user.nick}</p>
             </div>
             
             {user.description && (
               <motion.p 
-                className="profile-bio"
+                className={styles.profileBio}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.2 }}
@@ -89,23 +90,23 @@ function Profile({ user, posts, onProfileClick, allUsers }) {
               </motion.p>
             )}
             
-            <div className="profile-metadata">
-              <div className="profile-meta-item">
-                <span className="meta-icon">📅</span>
+            <div className={styles.profileMetadata}>
+              <div className={styles.profileMetaItem}>
+                <span className={styles.metaIcon}>📅</span>
                 <span>Joined {joinDate}</span>
               </div>
               
               {user.links && user.links.length > 0 && (
-                <div className="profile-meta-item">
-                  <span className="meta-icon">🔗</span>
-                  <div className="profile-links">
+                <div className={styles.profileMetaItem}>
+                  <span className={styles.metaIcon}>🔗</span>
+                  <div className={styles.profileLinks}>
                     {user.links.map((link, index) => (
                       <a 
                         key={index} 
                         href={link} 
                         target="_blank" 
                         rel="noopener noreferrer"
-                        className="profile-link"
+                        className={styles.profileLink}
                       >
                         {link.replace(/^https?:\/\//, '')}
                       </a>
@@ -115,14 +116,14 @@ function Profile({ user, posts, onProfileClick, allUsers }) {
               )}
               
               {user.contacts && user.contacts.length > 0 && (
-                <div className="profile-meta-item">
-                  <span className="meta-icon">📧</span>
-                  <div className="profile-contacts">
+                <div className={styles.profileMetaItem}>
+                  <span className={styles.metaIcon}>📧</span>
+                  <div className={styles.profileContacts}>
                     {user.contacts.map((contact, index) => (
                       <a 
                         key={index} 
                         href={contact}
-                        className="profile-contact"
+                        className={styles.profileContact}
                       >
                         {contact.replace(/^(mailto:|xmpp:)/, '')}
                       </a>
@@ -132,19 +133,19 @@ function Profile({ user, posts, onProfileClick, allUsers }) {
               )}
             </div>
             
-            <div className="profile-stats">
-              <div className="stat">
-                <span className="stat-number">{posts.length}</span>
-                <span className="stat-label">Posts</span>
+            <div className={styles.profileStats}>
+              <div className={styles.stat}>
+                <span className={styles.statNumber}>{posts.length}</span>
+                <span className={styles.statLabel}>Posts</span>
               </div>
-              <div className="stat">
-                <span className="stat-number">{user.follows?.length || 0}</span>
-                <span className="stat-label">Following</span>
+              <div className={styles.stat}>
+                <span className={styles.statNumber}>{user.follows?.length || 0}</span>
+                <span className={styles.statLabel}>Following</span>
               </div>
               {user.polls && user.polls.length > 0 && (
-                <div className="stat">
-                  <span className="stat-number">{user.polls.length}</span>
-                  <span className="stat-label">Polls</span>
+                <div className={styles.stat}>
+                  <span className={styles.statNumber}>{user.polls.length}</span>
+                  <span className={styles.statLabel}>Polls</span>
                 </div>
               )}
             </div>
@@ -155,30 +156,30 @@ function Profile({ user, posts, onProfileClick, allUsers }) {
       {/* Following Section */}
       {user.follows && user.follows.length > 0 && (
         <motion.div 
-          className="profile-following"
+          className={styles.profileFollowing}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.4 }}
         >
-          <h3 className="section-title">Following</h3>
-          <div className="following-list">
+          <h3 className={styles.sectionTitle}>Following</h3>
+          <div className={styles.followingList}>
             {user.follows.map((follow, index) => (
               <motion.div 
                 key={index}
-                className="following-item"
+                className={styles.followingItem}
                 whileHover={{ scale: 1.02, backgroundColor: 'var(--twitter-hover-bg)' }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => handleFollowClick(follow)}
               >
-                <div className="following-avatar">
+                <div className={styles.followingAvatar}>
                   <img 
-                    src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${follow.nick}`}
+                    src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiByeD0iMjAiIGZpbGw9IiNFNUU3RUIiLz4KPHBhdGggZD0iTTEyIDEyQzkuNzkgMTIgOCAxMC4yMSA4IDhTOS43OSA0IDEyIDRTMTYgNS43OSAxNiA4UzE0LjIxIDEyIDEyIDEyWk0xMiAxNEMxNi40MiAxNCAyMCAxNS43OSAyMCAyMFYyMkg0VjIwQzQgMTUuNzkgNy41OCAxNCAxMiAxNFoiIGZpbGw9IiM5Q0E0QUYiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDgsIDgpIi8+Cjwvc3ZnPgo='
                     alt={`${follow.nick}'s avatar`}
                   />
                 </div>
-                <div className="following-info">
-                  <div className="following-name">{follow.nick}</div>
-                  <div className="following-url">{follow.url}</div>
+                <div className={styles.followingInfo}>
+                  <div className={styles.followingName}>{follow.nick}</div>
+                  <div className={styles.followingUrl}>{follow.url}</div>
                 </div>
               </motion.div>
             ))}
@@ -188,23 +189,23 @@ function Profile({ user, posts, onProfileClick, allUsers }) {
 
       {/* Posts Section */}
       <motion.div 
-        className="profile-posts"
+        className={styles.profilePosts}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4, duration: 0.4 }}
       >
-        <h3 className="section-title">
+        <h3 className={styles.sectionTitle}>
           Posts ({posts.length})
         </h3>
         
         {posts.length === 0 ? (
-          <div className="no-posts">
-            <div className="no-posts-icon">📝</div>
+          <div className={styles.noPosts}>
+            <div className={styles.noPostsIcon}>📝</div>
             <p>No posts yet</p>
             <small>This user hasn't posted anything yet.</small>
           </div>
         ) : (
-          <div className="posts-list">
+          <div className={styles.postsList}>
             {posts.map((post, index) => (
               <motion.div
                 key={`${post.id || post.timestamp}-${index}`}

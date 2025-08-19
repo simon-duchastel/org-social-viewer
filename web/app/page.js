@@ -1,9 +1,11 @@
+'use client'
+
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import URLInput from './components/URLInput'
-import MainApp from './components/MainApp'
+import URLInput from '../components/URLInput'
+import MainApp from '../components/MainApp'
 
-function App() {
+export default function HomePage() {
   const [orgSocialUrl, setOrgSocialUrl] = useState(null)
 
   const handleUrlSubmit = (url) => {
@@ -42,5 +44,3 @@ function App() {
     </div>
   )
 }
-
-export default App
