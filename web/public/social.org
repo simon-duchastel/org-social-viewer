@@ -3,47 +3,36 @@
 #+DESCRIPTION: Software developer interested in org-mode and social media integration
 #+AVATAR: /avatar-simon.svg
 #+LINK: https://github.com/simon-duchastel
-#+FOLLOW: alice/alice-social.org
-#+FOLLOW: bob/bob-social.org
+#+FOLLOW: alice /alice-social.org
+#+FOLLOW: bob /bob-social.org
 #+CONTACT: simon@example.com
 
-* Posts	
+* Posts
 
-** Hello world!	
-:PROPERTIES:	
-:ID: 2024-12-01T10:00:00Z	
-:LANG: en	
-:TAGS: introduction	
-:END:	
+** Hello world!
+:PROPERTIES:
+:ID: 2024-12-01T10:00:00Z
+:LANG: en
+:TAGS: introduction
+:END:
 
-This is my first post on org-social! I'm excited to try this new format for social media.	
+This is my first post on org-social! I'm excited to try this new format for social media.
 
-** Working on a new project	
-:PROPERTIES:	
-:ID: 2024-12-02T14:30:00Z	
-:LANG: en	
-:TAGS: programming work	
-:MOOD: excited	
-:END:	
+** Working on a new project
+:PROPERTIES:
+:ID: 2024-12-02T14:30:00Z
+:LANG: en
+:TAGS: programming work
+:MOOD: excited
+:END:
 
-Just started working on a new [[https://github.com/my-project][open source project]]. It's going to be amazing!	
+Just started working on a new [[https://github.com/my-project][open source project]]. It's going to be amazing!
 
-Check out the features:	
-- Fast performance	
-- Easy to use	
-- Well documented	
+Check out the features:
+- Fast performance
+- Easy to use
+- Well documented
 
-<<<<<<< HEAD:test-social.org
-** Reply to Alice's question	
-:PROPERTIES:	
-:ID: 2024-12-03T09:15:00Z	
-:LANG: en	
-:REPLY_TO: 2024-12-02T18:00:00Z	
-:REPLY_URL: https://raw.githubusercontent.com/alice/dotfiles/main/social.org	
-:END:	
-
-[[org-social:https://raw.githubusercontent.com/alice/dotfiles/main/social.org][Alice]] Great question! Here's what I think about that topic.	
-=======
 ** Reply to Alice's question
 :PROPERTIES:
 :ID: 2024-12-03T09:15:00Z
@@ -53,22 +42,20 @@ Check out the features:
 :END:
 
 [[org-social:/alice-social.org][Alice]] Great question! Here's what I think about that topic.
->>>>>>> main:web/public/social.org
 
-* Polls	
+* Polls
 
-** What's your favorite programming language?	
-:PROPERTIES:	
-:ID: 2024-12-04T16:20:00Z	
-:LANG: en	
-:TAGS: poll programming	
-:END:	
+** What's your favorite programming language?
+:PROPERTIES:
+:ID: 2024-12-04T16:20:00Z
+:LANG: en
+:TAGS: poll programming
+:END:
 
-I'm curious about everyone's preferences:	
+I'm curious about everyone's preferences:
 
-- [x] JavaScript	
-- [ ] Python  	
-- [ ] Rust	
-- [ ] Go	
+- [x] JavaScript
+- [ ] Python  
+- [ ] Rust
+- [ ] Go
 - [ ] Other
-
