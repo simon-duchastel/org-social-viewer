@@ -99,7 +99,7 @@ function MainApp({ url, onBack }) {
 
   const handleBackToTimeline = () => {
     const params = new URLSearchParams(searchParams)
-    params.delete('view')
+    params.set('view', 'timeline')
     params.delete('user')
     router.push(`?${params.toString()}`)
   }
