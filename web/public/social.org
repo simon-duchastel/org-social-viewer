@@ -3,8 +3,8 @@
 #+DESCRIPTION: Software developer interested in org-mode and social media integration
 #+AVATAR: https://example.com/avatar.jpg
 #+LINK: https://github.com/simon-duchastel
-#+FOLLOW: alice https://raw.githubusercontent.com/alice/dotfiles/main/social.org
-#+FOLLOW: bob https://raw.githubusercontent.com/bob/dotfiles/main/social.org
+#+FOLLOW: alice http://localhost:3001/alice-social.org
+#+FOLLOW: bob http://localhost:3001/bob-social.org
 #+CONTACT: simon@example.com
 
 * Posts
@@ -38,10 +38,10 @@ Check out the features:
 :ID: 2024-12-03T09:15:00Z
 :LANG: en
 :REPLY_TO: 2024-12-02T18:00:00Z
-:REPLY_URL: https://raw.githubusercontent.com/alice/dotfiles/main/social.org
+:REPLY_URL: http://localhost:3001/alice-social.org
 :END:
 
-[[org-social:https://raw.githubusercontent.com/alice/dotfiles/main/social.org][Alice]] Great question! Here's what I think about that topic.
+[[org-social:http://localhost:3001/alice-social.org][Alice]] Great question! Here's what I think about that topic.
 
 * Polls
 

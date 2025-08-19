@@ -1,0 +1,44 @@
+#+TITLE: Bob's Dev Journal
+#+NICK: bob
+#+DESCRIPTION: Backend engineer passionate about distributed systems
+#+AVATAR: https://example.com/bob-avatar.jpg
+#+LINK: https://github.com/bob
+#+CONTACT: bob@example.com
+
+* Posts
+
+** Microservices vs Monolith debate
+:PROPERTIES:
+:ID: 2024-11-30T14:20:00Z
+:LANG: en
+:TAGS: architecture microservices
+:END:
+
+Been thinking about when to split a monolith into microservices. The complexity trade-offs are really interesting to consider.
+
+** New Rust project update
+:PROPERTIES:
+:ID: 2024-12-01T16:45:00Z
+:LANG: en
+:TAGS: rust programming
+:MOOD: focused
+:END:
+
+Making great progress on my Rust CLI tool. The borrow checker was fighting me yesterday but everything clicked today!
+
+* Polls
+
+** What's your preferred database for new projects?
+:PROPERTIES:
+:ID: 2024-12-02T12:00:00Z
+:LANG: en
+:TAGS: poll database
+:END:
+
+Curious what everyone is using these days:
+
+- [ ] PostgreSQL
+- [x] SQLite
+- [ ] MongoDB
+- [ ] Redis
+- [ ] Other
