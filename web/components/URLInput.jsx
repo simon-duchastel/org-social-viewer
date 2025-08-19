@@ -119,7 +119,7 @@ function URLInput({ onUrlSubmit }) {
             <button 
               type="button"
               className={styles.exampleUrl}
-              onClick={() => setUrl('./social.org')}
+              onClick={() => setUrl(`${window.location.origin}/social.org`)}
             >
               ./social.org (local example)
             </button>
