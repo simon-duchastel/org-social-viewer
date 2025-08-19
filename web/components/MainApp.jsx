@@ -1,5 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { fetchOrgSocial, fetchFollowedUsers } from '../utils/apiClient'
 import Header from './Header'
@@ -9,17 +10,36 @@ import LoadingSpinner from './LoadingSpinner'
 import ErrorMessage from './ErrorMessage'
 
 function MainApp({ url, onBack }) {
+  const router = useRouter()
+  const searchParams = useSearchParams()
   const [mainUser, setMainUser] = useState(null)
   const [followedUsers, setFollowedUsers] = useState([])
   const [allPosts, setAllPosts] = useState([])
-  const [currentView, setCurrentView] = useState('timeline') // 'timeline' or 'profile'
-  const [selectedUser, setSelectedUser] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+
+  // Get current view and selected user from URL params
+  const currentView = searchParams.get('view') || 'timeline'
+  const selectedUserNick = searchParams.get('user')
+  
+  // Find the selected user object based on the URL parameter
+  const selectedUser = selectedUserNick 
+    ? [mainUser, ...followedUsers].find(user => user?.nick === selectedUserNick)
+    : null
 
   useEffect(() => {
     loadOrgSocial()
   }, [url])
+
+  // Set initial URL state when entering the app
+  useEffect(() => {
+    if (!searchParams.get('view')) {
+      const params = new URLSearchParams(searchParams)
+      params.set('view', 'timeline')
+      router.replace(`?${params.toString()}`)
+    }
+  }, [])
+
 
   const loadOrgSocial = async () => {
     setLoading(true)
@@ -71,13 +91,17 @@ function MainApp({ url, onBack }) {
   }
 
   const handleProfileClick = (user) => {
-    setSelectedUser(user)
-    setCurrentView('profile')
+    const params = new URLSearchParams(searchParams)
+    params.set('view', 'profile')
+    params.set('user', user.nick)
+    router.push(`?${params.toString()}`)
   }
 
   const handleBackToTimeline = () => {
-    setCurrentView('timeline')
-    setSelectedUser(null)
+    const params = new URLSearchParams(searchParams)
+    params.delete('view')
+    params.delete('user')
+    router.push(`?${params.toString()}`)
   }
 
   const handleRefresh = () => {
