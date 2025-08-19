@@ -1,7 +1,7 @@
 #+TITLE: Bob's Dev Journal
 #+NICK: bob
 #+DESCRIPTION: Backend engineer passionate about distributed systems
-#+AVATAR: https://example.com/bob-avatar.jpg
+#+AVATAR: /avatar-bob.svg
 #+LINK: https://github.com/bob
 #+CONTACT: bob@example.com
 

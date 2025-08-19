@@ -1,7 +1,7 @@
 #+TITLE: Simon's Social Feed
 #+NICK: simond
 #+DESCRIPTION: Software developer interested in org-mode and social media integration
-#+AVATAR: https://example.com/avatar.jpg
+#+AVATAR: /avatar-simon.svg
 #+LINK: https://github.com/simon-duchastel
 #+FOLLOW: alice http://localhost:3001/alice-social.org
 #+FOLLOW: bob http://localhost:3001/bob-social.org

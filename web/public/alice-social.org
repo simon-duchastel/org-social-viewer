@@ -1,7 +1,7 @@
 #+TITLE: Alice's Tech Blog
 #+NICK: alice
 #+DESCRIPTION: Full-stack developer and open source enthusiast
-#+AVATAR: https://example.com/alice-avatar.jpg
+#+AVATAR: /avatar-alice.svg
 #+LINK: https://github.com/alice
 #+CONTACT: alice@example.com
 
