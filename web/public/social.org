@@ -58,4 +58,4 @@ I'm curious about everyone's preferences:
 - [ ] Python  
 - [ ] Rust
 - [ ] Go
-- - [ ] Other
+- [ ] Other
