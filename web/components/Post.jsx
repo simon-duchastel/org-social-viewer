@@ -8,15 +8,20 @@ function Post({ post, onProfileClick, allUsers }) {
     try {
       // Try to use the pre-parsed date if available
       let date
-      if (post.parsedDate) {
+      if (post.parsedDate && post.parsedDate instanceof Date) {
         date = post.parsedDate
       } else {
         // Fallback to parsing the timestamp
-        date = parseOrgSocialTimestamp(timestamp) || new Date(timestamp)
+        const parsed = parseOrgSocialTimestamp(timestamp)
+        if (parsed) {
+          date = parsed
+        } else {
+          date = new Date(timestamp)
+        }
       }
       
-      // Check if date is valid
-      if (!date || isNaN(date.getTime())) {
+      // Ensure we have a Date object and it's valid
+      if (!(date instanceof Date) || isNaN(date.getTime())) {
         return 'invalid date'
       }
       
@@ -120,9 +125,18 @@ function Post({ post, onProfileClick, allUsers }) {
               </motion.span>
               <span className={styles.postSeparator}>·</span>
               <span className={styles.postTimestamp} title={
-                post.parsedDate 
-                  ? post.parsedDate.toLocaleString() 
-                  : (parseOrgSocialTimestamp(post.timestamp) || new Date(post.timestamp)).toLocaleString()
+                (() => {
+                  let date
+                  if (post.parsedDate && post.parsedDate instanceof Date) {
+                    date = post.parsedDate
+                  } else {
+                    const parsed = parseOrgSocialTimestamp(post.timestamp)
+                    date = parsed || new Date(post.timestamp)
+                  }
+                  return (date instanceof Date && !isNaN(date.getTime())) 
+                    ? date.toLocaleString() 
+                    : post.timestamp
+                })()
               }>
                 {formatTimestamp(post.timestamp)}
               </span>
