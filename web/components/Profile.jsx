@@ -1,6 +1,5 @@
 'use client'
 import { motion } from 'framer-motion'
-import { parseOrgSocialTimestamp } from '../utils/dateUtils'
 import Post from './Post'
 import styles from './Profile.module.css'
 
@@ -17,25 +16,20 @@ function Profile({ user, posts, onProfileClick, allUsers }) {
     return user.avatar || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiByeD0iMjAiIGZpbGw9IiNFNUU3RUIiLz4KPHBhdGggZD0iTTEyIDEyQzkuNzkgMTIgOCAxMC4yMSA4IDhTOS43OSA0IDEyIDRTMTYgNS43OSAxNiA4UzE0LjIxIDEyIDEyIDEyWk0xMiAxNEMxNi40MiAxNCAyMCAxNS43OSAyMCAyMFYyMkg0VjIwQzQgMTUuNzkgNy41OCAxNCAxMiAxNFoiIGZpbGw9IiM5Q0E0QUYiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDgsIDgpIi8+Cjwvc3ZnPgo='
   }
 
-  const formatDate = (dateString) => {
-    try {
-      const date = parseOrgSocialTimestamp(dateString) || new Date(dateString)
-      if (!date || isNaN(date.getTime())) {
-        return 'Date unknown'
-      }
-      return date.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long'
-      })
-    } catch (error) {
-      console.warn('Error formatting date:', dateString, error)
-      return 'Date unknown'
-    }
-  }
-
   // Find the earliest post to estimate join date
   const joinDate = posts.length > 0 
-    ? formatDate(posts[posts.length - 1].timestamp)
+    ? (() => {
+        const earliestPost = posts[posts.length - 1]
+        const date = earliestPost.parsedDate
+        
+        if (date instanceof Date && !isNaN(date.getTime())) {
+          return date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long'
+          })
+        }
+        return 'Recently'
+      })()
     : 'Recently'
 
   const handleFollowClick = (followUser) => {
