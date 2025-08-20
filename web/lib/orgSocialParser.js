@@ -139,15 +139,14 @@ function extractPosts(ast) {
         const headlineText = getPlainText(firstChild)
         if (headlineText === 'Posts' || headlineText === 'Polls') {
           const isPoll = headlineText === 'Polls'
-          // Found the Posts/Polls section, now look for subsequent sections with level 2 headlines
-          for (let i = 1; i < node.children.length; i++) {
-            const child = node.children[i]
-            if (child.type === 'section') {
-              // Look for level 2 headlines in this section
-              const post = extractPostFromSection(child, isPoll)
-              if (post) posts.push(post)
-            }
-          }
+          
+          // Found the Posts/Polls section, now extract posts from this section
+          // Posts can be either:
+          // 1. Proper level 2 headline sections
+          // 2. Content marked by "**" text patterns
+          
+          const extractedPosts = extractPostsFromPostsSection(node, isPoll)
+          posts.push(...extractedPosts)
         }
       }
     }
@@ -163,6 +162,177 @@ function extractPosts(ast) {
   }
 
   return posts
+}
+
+/**
+ * Extract posts from a Posts/Polls section, handling both proper headlines and "**" text patterns
+ */
+function extractPostsFromPostsSection(postsSection, isPoll = false) {
+  const posts = []
+  
+  if (!postsSection.children || postsSection.children.length === 0) {
+    return posts
+  }
+  
+  // First try the traditional approach - look for proper level 2 headline sections
+  for (let i = 1; i < postsSection.children.length; i++) {
+    const child = postsSection.children[i]
+    if (child.type === 'section') {
+      const post = extractPostFromSection(child, isPoll)
+      if (post) posts.push(post)
+    }
+  }
+  
+  // If no posts found with traditional approach, try parsing "**" text patterns
+  if (posts.length === 0) {
+    const extractedPosts = extractPostsFromTextPattern(postsSection, isPoll)
+    posts.push(...extractedPosts)
+  }
+
+  return posts
+}
+
+/**
+ * Extract posts from "**" text patterns within a section
+ */
+function extractPostsFromTextPattern(postsSection, isPoll = false) {
+  const posts = []
+  
+  if (!postsSection.children || postsSection.children.length === 0) {
+    return posts
+  }
+  
+  // Group content by "**" markers
+  const postGroups = []
+  let currentGroup = []
+  let isCollectingPost = false
+  
+  // Start from index 1 to skip the "Posts" headline
+  for (let i = 1; i < postsSection.children.length; i++) {
+    const child = postsSection.children[i]
+    
+    if (child.type === 'paragraph') {
+      const text = getPlainText(child).trim()
+      
+      // Check if this paragraph contains "**" marker
+      if (text === '**' || text.startsWith('**\n') || text === '**\n') {
+        // Start of a new post
+        if (currentGroup.length > 0) {
+          postGroups.push(currentGroup)
+        }
+        currentGroup = []
+        isCollectingPost = true
+        continue
+      }
+    }
+    
+    // If we're collecting a post, add this child to the current group
+    if (isCollectingPost) {
+      currentGroup.push(child)
+    }
+  }
+  
+  // Add the last group if any
+  if (currentGroup.length > 0) {
+    postGroups.push(currentGroup)
+  }
+  
+  // Process each post group
+  postGroups.forEach(group => {
+    const post = extractPostFromNodeGroup(group, isPoll)
+    if (post) posts.push(post)
+  })
+  
+  return posts
+}
+
+/**
+ * Extract a post from a group of nodes
+ */
+function extractPostFromNodeGroup(nodes, isPoll = false) {
+  if (!nodes || nodes.length === 0) {
+    return null
+  }
+  
+  const post = {
+    content: '',
+    rawContent: '',
+    timestamp: '',
+    properties: {},
+    mentions: [],
+    links: [],
+    isReply: false,
+    checkboxes: [],
+    isPoll
+  }
+  
+  // Process each node in the group
+  nodes.forEach(node => {
+    if (node.type === 'property-drawer') {
+      extractProperties(node, post.properties)
+    } else if (node.type === 'drawer') {
+      // Handle property drawers that are parsed as generic drawers
+      extractPropertiesFromDrawer(node, post.properties)
+    } else if (node.type === 'paragraph') {
+      const paragraphText = getPlainText(node)
+      post.content += paragraphText + '\n'
+      post.rawContent += paragraphText + '\n'
+    } else if (node.type === 'plain-list') {
+      // Handle checkbox lists
+      if (node.children) {
+        node.children.forEach(listItem => {
+          if (listItem.type === 'list-item') {
+            const itemText = getPlainText(listItem)
+            
+            // Check if this is a checkbox item
+            if (listItem.checkbox !== null) {
+              const checked = listItem.checkbox === 'on'
+              post.checkboxes.push({ checked, text: itemText.trim() })
+            } else {
+              // Regular list item
+              post.content += '- ' + itemText + '\n'
+              post.rawContent += '- ' + itemText + '\n'
+            }
+          }
+        })
+      }
+    }
+  })
+  
+  // Clean up content
+  post.content = post.content.trim()
+  post.rawContent = post.rawContent.trim()
+  
+  // Process properties
+  if (post.properties.ID) {
+    const parsedDate = parseOrgSocialTimestamp(post.properties.ID)
+    if (parsedDate) {
+      post.timestamp = parsedDate.toISOString()
+      post.parsedDate = parsedDate
+      post.formattedTimestamp = formatTimestampForDisplay(parsedDate)
+      post.fullTimestamp = parsedDate.toLocaleString()
+    } else {
+      post.timestamp = post.properties.ID
+      post.parsedDate = null
+      post.formattedTimestamp = 'invalid date'
+      post.fullTimestamp = post.properties.ID
+    }
+    post.id = post.properties.ID
+  }
+  
+  // Check if it's a reply
+  if (post.properties.REPLY_TO || post.properties.REPLYTO || post.properties.REPLY_URL) {
+    post.isReply = true
+    post.replyTo = post.properties.REPLY_TO || post.properties.REPLYTO
+    post.replyUrl = post.properties.REPLY_URL
+  }
+  
+  // Extract mentions and links
+  post.mentions = extractMentions(post.content)
+  post.links = extractLinks(post.content)
+  post.displayContent = processOrgContent(post.content)
+  
+  return post.content || post.properties.ID ? post : null
 }
 
 /**
@@ -257,9 +427,9 @@ function extractPostFromSection(sectionNode, isPoll = false) {
   }
 
   // Check if it's a reply
-  if (post.properties.REPLY_TO || post.properties.REPLY_URL) {
+  if (post.properties.REPLY_TO || post.properties.REPLYTO || post.properties.REPLY_URL) {
     post.isReply = true
-    post.replyTo = post.properties.REPLY_TO
+    post.replyTo = post.properties.REPLY_TO || post.properties.REPLYTO
     post.replyUrl = post.properties.REPLY_URL
   }
 
@@ -283,6 +453,71 @@ function extractProperties(drawerNode, properties) {
       }
     })
   }
+}
+
+/**
+ * Extract properties from generic drawer (for cases where uniorg doesn't recognize property drawer)
+ */
+function extractPropertiesFromDrawer(drawerNode, properties) {
+  if (drawerNode.children) {
+    drawerNode.children.forEach(child => {
+      if (child.type === 'paragraph') {
+        // Get all text content, handling complex node structures
+        const fullText = extractAllTextFromNode(child)
+        
+        // Handle multi-line property content (split by lines and process each)
+        const lines = fullText.split('\n')
+        lines.forEach(line => {
+          line = line.trim()
+          
+          // Parse property lines like ":ID: 2024-12-12T12:00:00+0100"
+          // Also handle cases where subscript/superscript interfered with parsing
+          const propertyMatch = line.match(/^:([A-Z_]+):\s*(.*)$/)
+          if (propertyMatch) {
+            const key = propertyMatch[1]
+            let value = propertyMatch[2]
+            
+            // Fix common parsing issues
+            if (key === 'REPLYTO' && value.startsWith('//')) {
+              // Fix missing protocol
+              value = 'http:' + value
+            }
+            
+            properties[key] = value
+          }
+        })
+      }
+    })
+  }
+}
+
+/**
+ * Extract all text content from a node, handling complex structures
+ */
+function extractAllTextFromNode(node) {
+  if (node.type === 'text') {
+    return node.value || ''
+  }
+  
+  if (node.type === 'subscript' || node.type === 'superscript') {
+    // For subscript/superscript, return the plain text content
+    return node.children ? node.children.map(extractAllTextFromNode).join('') : ''
+  }
+  
+  if (node.type === 'link') {
+    // For links in property context, include the full URL
+    const url = node.path || ''
+    const description = node.children && node.children.length > 0 
+      ? node.children.map(extractAllTextFromNode).join('')
+      : url
+    return url
+  }
+  
+  if (node.children) {
+    return node.children.map(extractAllTextFromNode).join('')
+  }
+  
+  return ''
 }
 
 /**
