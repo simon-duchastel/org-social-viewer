@@ -1,5 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { fetchOrgSocial, fetchFollowedUsers } from '../utils/apiClient'
 import Header from './Header'
@@ -9,17 +10,59 @@ import LoadingSpinner from './LoadingSpinner'
 import ErrorMessage from './ErrorMessage'
 
 function MainApp({ url, onBack }) {
+  const router = useRouter()
+  const searchParams = useSearchParams()
   const [mainUser, setMainUser] = useState(null)
   const [followedUsers, setFollowedUsers] = useState([])
   const [allPosts, setAllPosts] = useState([])
-  const [currentView, setCurrentView] = useState('timeline') // 'timeline' or 'profile'
-  const [selectedUser, setSelectedUser] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+
+  // Get current view and selected user from URL params
+  const currentView = searchParams.get('view') || 'timeline'
+  const selectedUserNick = searchParams.get('user')
+  
+  // Find the selected user object based on the URL parameter
+  const selectedUser = selectedUserNick 
+    ? [mainUser, ...followedUsers].find(user => user?.nick === selectedUserNick)
+    : null
 
   useEffect(() => {
     loadOrgSocial()
   }, [url])
+
+  // Set initial URL state when entering the app
+  useEffect(() => {
+    if (!searchParams.get('view') && mainUser) {
+      const params = new URLSearchParams(searchParams)
+      params.set('view', 'timeline')
+      params.set('user', mainUser.nick)
+      router.push(`?${params.toString()}`)
+    }
+  }, [mainUser])
+
+  // Handle browser back/forward navigation
+  useEffect(() => {
+    const handlePopState = (event) => {
+      // Check the current URL state
+      const currentUrl = new URL(window.location)
+      const urlParam = currentUrl.searchParams.get('url')
+      const viewParam = currentUrl.searchParams.get('view')
+      
+      // If there's no URL param, we should go back to URL input
+      if (!urlParam) {
+        onBack()
+        return
+      }
+      
+      // Don't interfere with normal back navigation - let the URL params handle the state
+      // The components will re-render based on the new URL parameters automatically
+    }
+
+    window.addEventListener('popstate', handlePopState)
+    return () => window.removeEventListener('popstate', handlePopState)
+  }, [onBack])
+
 
   const loadOrgSocial = async () => {
     setLoading(true)
@@ -71,13 +114,17 @@ function MainApp({ url, onBack }) {
   }
 
   const handleProfileClick = (user) => {
-    setSelectedUser(user)
-    setCurrentView('profile')
+    const params = new URLSearchParams(searchParams)
+    params.set('view', 'profile')
+    params.set('user', user.nick)
+    
+    // Always use push to create proper browser history entries
+    router.push(`?${params.toString()}`)
   }
 
-  const handleBackToTimeline = () => {
-    setCurrentView('timeline')
-    setSelectedUser(null)
+  const handleBack = () => {
+    // Let the browser handle back navigation naturally
+    window.history.back()
   }
 
   const handleRefresh = () => {
@@ -102,7 +149,7 @@ function MainApp({ url, onBack }) {
     <div className="main-app">
       <Header 
         user={mainUser}
-        onBack={currentView === 'timeline' ? onBack : handleBackToTimeline}
+        onBack={handleBack}
         onRefresh={handleRefresh}
         title={currentView === 'profile' ? selectedUser?.nick : 'Timeline'}
         showBackButton={true}
@@ -118,7 +165,7 @@ function MainApp({ url, onBack }) {
             transition={{ duration: 0.3 }}
           >
             <Timeline 
-              posts={allPosts}
+              posts={selectedUser ? allPosts.filter(post => post.user.nick === selectedUser.nick) : allPosts}
               users={[mainUser, ...followedUsers]}
               onProfileClick={handleProfileClick}
             />
