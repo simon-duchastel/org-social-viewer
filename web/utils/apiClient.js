@@ -9,7 +9,8 @@ export async function fetchOrgSocial(url) {
       throw new Error(errorData.error || `HTTP ${response.status}: ${response.statusText}`)
     }
     
-    return await response.json()
+    const data = await response.json()
+    return data
   } catch (error) {
     console.error('Error fetching org-social file via API:', error)
     throw error
@@ -31,7 +32,8 @@ export async function parseOrgSocialContent(content, sourceUrl = '') {
       throw new Error(errorData.error || `HTTP ${response.status}: ${response.statusText}`)
     }
     
-    return await response.json()
+    const data = await response.json()
+    return data
   } catch (error) {
     console.error('Error parsing org-social content via API:', error)
     throw error
@@ -53,7 +55,8 @@ export async function fetchFollowedUsers(mainUser) {
       throw new Error(errorData.error || `HTTP ${response.status}: ${response.statusText}`)
     }
     
-    return await response.json()
+    const data = await response.json()
+    return data
   } catch (error) {
     console.error('Error fetching followed users via API:', error)
     throw error

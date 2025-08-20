@@ -9,7 +9,7 @@
 
 * Posts
 
-** Hello world!
+**
 :PROPERTIES:
 :ID: 2024-12-01T10:00:00Z
 :LANG: en
@@ -18,7 +18,7 @@
 
 This is my first post on org-social! I'm excited to try this new format for social media.
 
-** Working on a new project
+**
 :PROPERTIES:
 :ID: 2024-12-02T14:30:00Z
 :LANG: en
@@ -33,7 +33,7 @@ Check out the features:
 - Easy to use
 - Well documented
 
-** Reply to Alice's question
+**
 :PROPERTIES:
 :ID: 2024-12-03T09:15:00Z
 :LANG: en
@@ -45,7 +45,7 @@ Check out the features:
 
 * Polls
 
-** What's your favorite programming language?
+**
 :PROPERTIES:
 :ID: 2024-12-04T16:20:00Z
 :LANG: en
