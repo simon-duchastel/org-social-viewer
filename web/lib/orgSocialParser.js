@@ -24,6 +24,46 @@ function parseOrgSocialTimestamp(timestamp) {
 }
 
 /**
+ * Format a date for display in posts (relative time)
+ */
+function formatTimestampForDisplay(date) {
+  if (!date || !(date instanceof Date) || isNaN(date.getTime())) {
+    return 'invalid date'
+  }
+  
+  const now = new Date()
+  const diffMs = now - date
+  const diffMinutes = Math.floor(diffMs / 60000)
+  const diffHours = Math.floor(diffMs / 3600000)
+  const diffDays = Math.floor(diffMs / 86400000)
+
+  if (diffMinutes < 1) return 'now'
+  if (diffMinutes < 60) return `${diffMinutes}m`
+  if (diffHours < 24) return `${diffHours}h`
+  if (diffDays < 7) return `${diffDays}d`
+  
+  return date.toLocaleDateString('en-US', { 
+    month: 'short', 
+    day: 'numeric',
+    year: date.getFullYear() !== now.getFullYear() ? 'numeric' : undefined
+  })
+}
+
+/**
+ * Format a date for join date display (month + year)
+ */
+function formatJoinDate(date) {
+  if (!date || !(date instanceof Date) || isNaN(date.getTime())) {
+    return 'Recently'
+  }
+  
+  return date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long'
+  })
+}
+
+/**
  * Extract global metadata from org AST
  */
 function extractGlobalMetadata(ast) {
@@ -205,9 +245,13 @@ function extractPostFromSection(sectionNode, isPoll = false) {
     if (parsedDate) {
       post.timestamp = parsedDate.toISOString()
       post.parsedDate = parsedDate
+      post.formattedTimestamp = formatTimestampForDisplay(parsedDate)
+      post.fullTimestamp = parsedDate.toLocaleString()
     } else {
       post.timestamp = post.properties.ID
       post.parsedDate = null
+      post.formattedTimestamp = 'invalid date'
+      post.fullTimestamp = post.properties.ID
     }
     post.id = post.properties.ID
   }
@@ -439,6 +483,18 @@ export function parseOrgSocial(text, sourceUrl = '') {
 
     // Sort posts by timestamp (newest first)
     user.posts.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+
+    // Add formatted join date based on earliest post
+    if (user.posts.length > 0) {
+      const earliestPost = user.posts[user.posts.length - 1]
+      if (earliestPost.parsedDate) {
+        user.formattedJoinDate = formatJoinDate(earliestPost.parsedDate)
+      } else {
+        user.formattedJoinDate = 'Recently'
+      }
+    } else {
+      user.formattedJoinDate = 'Recently'
+    }
 
     return user
   } catch (error) {

@@ -1,40 +1,5 @@
 const API_BASE_URL = typeof window !== 'undefined' ? '' : 'http://localhost:3001'
 
-/**
- * Convert date strings back to Date objects after JSON deserialization
- */
-function restoreDateObjects(data) {
-  if (!data) return data
-  
-  // Handle arrays of users
-  if (Array.isArray(data.users)) {
-    data.users.forEach(user => {
-      if (user.posts) {
-        user.posts.forEach(post => {
-          if (post.parsedDate && typeof post.parsedDate === 'string') {
-            console.log('Converting parsedDate string to Date:', post.parsedDate)
-            post.parsedDate = new Date(post.parsedDate)
-            console.log('Converted to Date object:', post.parsedDate)
-          }
-        })
-      }
-    })
-  }
-  
-  // Handle single user
-  if (data.posts) {
-    data.posts.forEach(post => {
-      if (post.parsedDate && typeof post.parsedDate === 'string') {
-        console.log('Converting parsedDate string to Date:', post.parsedDate)
-        post.parsedDate = new Date(post.parsedDate)
-        console.log('Converted to Date object:', post.parsedDate)
-      }
-    })
-  }
-  
-  return data
-}
-
 export async function fetchOrgSocial(url) {
   try {
     const response = await fetch(`${API_BASE_URL}/api/fetch-and-parse?url=${encodeURIComponent(url)}`)
@@ -45,7 +10,7 @@ export async function fetchOrgSocial(url) {
     }
     
     const data = await response.json()
-    return restoreDateObjects(data)
+    return data
   } catch (error) {
     console.error('Error fetching org-social file via API:', error)
     throw error
@@ -68,7 +33,7 @@ export async function parseOrgSocialContent(content, sourceUrl = '') {
     }
     
     const data = await response.json()
-    return restoreDateObjects(data)
+    return data
   } catch (error) {
     console.error('Error parsing org-social content via API:', error)
     throw error
@@ -91,7 +56,7 @@ export async function fetchFollowedUsers(mainUser) {
     }
     
     const data = await response.json()
-    return restoreDateObjects(data)
+    return data
   } catch (error) {
     console.error('Error fetching followed users via API:', error)
     throw error

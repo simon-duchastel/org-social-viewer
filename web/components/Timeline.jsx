@@ -71,7 +71,7 @@ function Timeline({ posts, users, onProfileClick }) {
         >
           <div className={styles.emptyIcon}>📝</div>
           <h3>No posts found</h3>
-          <p>This org-social feed doesn't have any posts yet, or they couldn't be loaded.</p>
+          <p>This org-social feed doesn&apos;t have any posts yet, or they couldn&apos;t be loaded.</p>
         </motion.div>
       </div>
     )
@@ -124,7 +124,7 @@ function Timeline({ posts, users, onProfileClick }) {
           >
             <div className={styles.endMessage}>
               <span>🎉</span>
-              <p>You've reached the end of the timeline!</p>
+              <p>You&apos;ve reached the end of the timeline!</p>
               <small>Showing {displayedPosts.length} of {posts.length} posts</small>
             </div>
           </motion.div>

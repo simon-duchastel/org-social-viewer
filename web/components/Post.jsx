@@ -1,53 +1,8 @@
 'use client'
 import { motion } from 'framer-motion'
-import { parseOrgSocialTimestamp } from '../utils/dateUtils'
 import styles from './Post.module.css'
 
 function Post({ post, onProfileClick, allUsers }) {
-  const formatTimestamp = (timestamp) => {
-    try {
-      let date
-      
-      // Try to use the pre-parsed date from the parser
-      if (post.parsedDate && post.parsedDate instanceof Date) {
-        date = post.parsedDate
-      } else {
-        // Fallback to parsing the timestamp
-        const parsed = parseOrgSocialTimestamp(timestamp)
-        
-        if (parsed && parsed instanceof Date) {
-          date = parsed
-        } else {
-          date = new Date(timestamp)
-        }
-      }
-      
-      // Ensure we have a valid Date object
-      if (!(date instanceof Date) || isNaN(date.getTime())) {
-        return 'invalid date'
-      }
-      
-      const now = new Date()
-      const diffMs = now - date
-      const diffMinutes = Math.floor(diffMs / 60000)
-      const diffHours = Math.floor(diffMs / 3600000)
-      const diffDays = Math.floor(diffMs / 86400000)
-
-      if (diffMinutes < 1) return 'now'
-      if (diffMinutes < 60) return `${diffMinutes}m`
-      if (diffHours < 24) return `${diffHours}h`
-      if (diffDays < 7) return `${diffDays}d`
-      
-      return date.toLocaleDateString('en-US', { 
-        month: 'short', 
-        day: 'numeric',
-        year: date.getFullYear() !== now.getFullYear() ? 'numeric' : undefined
-      })
-    } catch (error) {
-      console.warn('Error formatting timestamp:', timestamp, error)
-      return 'invalid date'
-    }
-  }
 
   const renderContent = (content) => {
     if (!content) return null
@@ -126,12 +81,8 @@ function Post({ post, onProfileClick, allUsers }) {
                 @{post.user.nick}
               </motion.span>
               <span className={styles.postSeparator}>·</span>
-              <span className={styles.postTimestamp} title={
-                post.parsedDate instanceof Date && !isNaN(post.parsedDate.getTime())
-                  ? post.parsedDate.toLocaleString()
-                  : post.timestamp
-              }>
-                {formatTimestamp(post.timestamp)}
+              <span className={styles.postTimestamp} title={post.fullTimestamp || post.timestamp}>
+                {post.formattedTimestamp || 'invalid date'}
               </span>
             </div>
 
@@ -168,7 +119,7 @@ function Post({ post, onProfileClick, allUsers }) {
               ))}
               {post.properties.POLL_END && (
                 <div className={styles.pollEnd}>
-                  Ends: {formatTimestamp(post.properties.POLL_END)}
+                  Ends: {post.properties.POLL_END}
                 </div>
               )}
             </div>

@@ -1,12 +1,17 @@
 import { fetchFollowedUsers } from '../../../lib/orgSocialParser.js'
-import { NextResponse } from 'next/server'
 
 export async function POST(request) {
   try {
     const { mainUser } = await request.json()
 
     if (!mainUser) {
-      return NextResponse.json({ error: 'Main user is required' }, { status: 400 })
+      return new Response(
+        JSON.stringify({ error: 'Main user is required' }),
+        { 
+          status: 400,
+          headers: { 'Content-Type': 'application/json' }
+        }
+      )
     }
 
     // Get the base URL from the request
@@ -14,12 +19,21 @@ export async function POST(request) {
     const baseUrl = `${url.protocol}//${url.host}`
 
     const result = await fetchFollowedUsers(mainUser, baseUrl)
-    return NextResponse.json(result)
+    return new Response(
+      JSON.stringify(result),
+      { 
+        status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      }
+    )
   } catch (error) {
     console.error('Fetch followed users error:', error)
-    return NextResponse.json(
-      { error: error.message || 'Failed to fetch followed users' },
-      { status: 500 }
+    return new Response(
+      JSON.stringify({ error: error.message || 'Failed to fetch followed users' }),
+      { 
+        status: 500,
+        headers: { 'Content-Type': 'application/json' }
+      }
     )
   }
 }

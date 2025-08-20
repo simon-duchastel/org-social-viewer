@@ -16,21 +16,8 @@ function Profile({ user, posts, onProfileClick, allUsers }) {
     return user.avatar || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiByeD0iMjAiIGZpbGw9IiNFNUU3RUIiLz4KPHBhdGggZD0iTTEyIDEyQzkuNzkgMTIgOCAxMC4yMSA4IDhTOS43OSA0IDEyIDRTMTYgNS43OSAxNiA4UzE0LjIxIDEyIDEyIDEyWk0xMiAxNEMxNi40MiAxNCAyMCAxNS43OSAyMCAyMFYyMkg0VjIwQzQgMTUuNzkgNy41OCAxNCAxMiAxNFoiIGZpbGw9IiM5Q0E0QUYiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDgsIDgpIi8+Cjwvc3ZnPgo='
   }
 
-  // Find the earliest post to estimate join date
-  const joinDate = posts.length > 0 
-    ? (() => {
-        const earliestPost = posts[posts.length - 1]
-        const date = earliestPost.parsedDate
-        
-        if (date instanceof Date && !isNaN(date.getTime())) {
-          return date.toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long'
-          })
-        }
-        return 'Recently'
-      })()
-    : 'Recently'
+  // Use pre-formatted join date from the user object
+  const joinDate = user.formattedJoinDate || 'Recently'
 
   const handleFollowClick = (followUser) => {
     const foundUser = allUsers.find(u => u.nick === followUser.nick || u.sourceUrl === followUser.url)
@@ -60,7 +47,7 @@ function Profile({ user, posts, onProfileClick, allUsers }) {
           >
             <img 
               src={getAvatarUrl(user)} 
-              alt={`${user.nick}'s avatar`}
+              alt={`${user.nick}&apos;s avatar`}
               className={styles.profileAvatar}
             />
           </motion.div>
@@ -168,7 +155,7 @@ function Profile({ user, posts, onProfileClick, allUsers }) {
                 <div className={styles.followingAvatar}>
                   <img 
                     src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiByeD0iMjAiIGZpbGw9IiNFNUU3RUIiLz4KPHBhdGggZD0iTTEyIDEyQzkuNzkgMTIgOCAxMC4yMSA4IDhTOS43OSA0IDEyIDRTMTYgNS43OSAxNiA4UzE0LjIxIDEyIDEyIDEyWk0xMiAxNEMxNi40MiAxNCAyMCAxNS43OSAyMCAyMFYyMkg0VjIwQzQgMTUuNzkgNy41OCAxNCAxMiAxNFoiIGZpbGw9IiM5Q0E0QUYiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDgsIDgpIi8+Cjwvc3ZnPgo='
-                    alt={`${follow.nick}'s avatar`}
+                    alt={`${follow.nick}&apos;s avatar`}
                   />
                 </div>
                 <div className={styles.followingInfo}>
@@ -196,7 +183,7 @@ function Profile({ user, posts, onProfileClick, allUsers }) {
           <div className={styles.noPosts}>
             <div className={styles.noPostsIcon}>📝</div>
             <p>No posts yet</p>
-            <small>This user hasn't posted anything yet.</small>
+            <small>This user hasn&apos;t posted anything yet.</small>
           </div>
         ) : (
           <div className={styles.postsList}>
