@@ -16,7 +16,12 @@ export default function HomePage() {
     // Add URL state to browser history when entering the app
     const params = new URLSearchParams()
     params.set('url', encodeURIComponent(url))
-    router.push(`?${params.toString()}`)
+    params.set('view', 'timeline')
+    
+    // Push state with proper navigation context
+    const newUrl = `?${params.toString()}`
+    window.history.pushState({ fromUrlInput: true, url }, '', newUrl)
+    router.push(newUrl)
   }
 
   const handleBack = () => {
@@ -30,8 +35,27 @@ export default function HomePage() {
     const urlParam = searchParams.get('url')
     if (urlParam && !orgSocialUrl) {
       setOrgSocialUrl(decodeURIComponent(urlParam))
+    } else if (!urlParam && orgSocialUrl) {
+      // URL has no param but state has URL - user navigated back
+      setOrgSocialUrl(null)
     }
-  }, [searchParams])
+  }, [searchParams, orgSocialUrl])
+
+  // Handle browser back button to return to URL input
+  useEffect(() => {
+    const handlePopState = (event) => {
+      const currentUrl = new URL(window.location)
+      const urlParam = currentUrl.searchParams.get('url')
+      
+      // If we're back to the main page without URL params, show URL input
+      if (!urlParam) {
+        setOrgSocialUrl(null)
+      }
+    }
+
+    window.addEventListener('popstate', handlePopState)
+    return () => window.removeEventListener('popstate', handlePopState)
+  }, [])
 
   return (
     <div className="container">

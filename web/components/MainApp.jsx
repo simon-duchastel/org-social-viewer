@@ -36,9 +36,34 @@ function MainApp({ url, onBack }) {
     if (!searchParams.get('view')) {
       const params = new URLSearchParams(searchParams)
       params.set('view', 'timeline')
-      router.replace(`?${params.toString()}`)
+      router.push(`?${params.toString()}`)
     }
   }, [])
+
+  // Handle browser back/forward navigation
+  useEffect(() => {
+    const handlePopState = (event) => {
+      // Check the current URL state
+      const currentUrl = new URL(window.location)
+      const urlParam = currentUrl.searchParams.get('url')
+      const viewParam = currentUrl.searchParams.get('view')
+      
+      // If there's no URL param, we should go back to URL input
+      if (!urlParam) {
+        onBack()
+        return
+      }
+      
+      // If we're on the timeline view and user pressed back, go to URL input
+      if (viewParam === 'timeline' && event.state?.fromTimeline) {
+        onBack()
+        return
+      }
+    }
+
+    window.addEventListener('popstate', handlePopState)
+    return () => window.removeEventListener('popstate', handlePopState)
+  }, [onBack])
 
 
   const loadOrgSocial = async () => {
@@ -97,11 +122,17 @@ function MainApp({ url, onBack }) {
     router.push(`?${params.toString()}`)
   }
 
-  const handleBackToTimeline = () => {
-    const params = new URLSearchParams(searchParams)
-    params.set('view', 'timeline')
-    params.delete('user')
-    router.push(`?${params.toString()}`)
+  const handleBack = () => {
+    if (currentView === 'profile') {
+      // From profile, go back to timeline
+      const params = new URLSearchParams(searchParams)
+      params.set('view', 'timeline')
+      params.delete('user')
+      router.push(`?${params.toString()}`)
+    } else {
+      // From timeline, go back to URL input
+      onBack()
+    }
   }
 
   const handleRefresh = () => {
@@ -126,7 +157,7 @@ function MainApp({ url, onBack }) {
     <div className="main-app">
       <Header 
         user={mainUser}
-        onBack={currentView === 'timeline' ? onBack : handleBackToTimeline}
+        onBack={handleBack}
         onRefresh={handleRefresh}
         title={currentView === 'profile' ? selectedUser?.nick : 'Timeline'}
         showBackButton={true}
