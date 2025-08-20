@@ -7,7 +7,7 @@
 
 * Posts
 
-** Excited about the new Vue 3 features!
+**
 :PROPERTIES:
 :ID: 2024-12-01T08:00:00Z
 :LANG: en
@@ -17,7 +17,7 @@
 
 Just upgraded my project to Vue 3 and the Composition API is amazing! The reactivity system feels so much more intuitive.
 
-** Working on a new open source library
+**
 :PROPERTIES:
 :ID: 2024-12-02T15:30:00Z
 :LANG: en
@@ -26,7 +26,7 @@ Just upgraded my project to Vue 3 and the Composition API is amazing! The reacti
 
 Building a new library for handling org-mode files in JavaScript. It's been a fun challenge parsing all the different syntax elements.
 
-** Coffee break thoughts
+**
 :PROPERTIES:
 :ID: 2024-12-03T10:15:00Z
 :LANG: en
