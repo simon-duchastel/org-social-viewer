@@ -9,6 +9,13 @@ function parseOrgSocialTimestamp(timestamp) {
   
   try {
     const normalizedTimestamp = timestamp.trim()
+    
+    // Check for malformed time formats like 014:29:00 or 012:10:00
+    if (normalizedTimestamp.match(/T0\d{2}:/)) {
+      console.warn('Malformed timestamp with invalid hour format:', timestamp)
+      return null
+    }
+    
     const date = new Date(normalizedTimestamp)
     
     if (isNaN(date.getTime())) {

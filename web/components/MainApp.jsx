@@ -37,28 +37,33 @@ function MainApp({ url, onBack }) {
       // Combine all posts
       const posts = []
       
-      // Add main user's posts
+      // Add main user's posts (filter out invalid dates)
       user.posts.forEach(post => {
-        posts.push({
-          ...post,
-          user: user,
-          sourceUrl: url
-        })
-      })
-      
-      // Add followed users' posts
-      followed.forEach(followedUser => {
-        followedUser.posts.forEach(post => {
+        if (post.parsedDate) {
           posts.push({
             ...post,
-            user: followedUser,
-            sourceUrl: followedUser.sourceUrl
+            user: user,
+            sourceUrl: url
           })
+        }
+      })
+      
+      // Add followed users' posts (filter out invalid dates)
+      followed.forEach(followedUser => {
+        followedUser.posts.forEach(post => {
+          if (post.parsedDate) {
+            posts.push({
+              ...post,
+              user: followedUser,
+              sourceUrl: followedUser.sourceUrl
+            })
+          }
         })
       })
       
       // Sort by timestamp (newest first)
-      posts.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+      posts.sort((a, b) => new Date(b.id) - new Date(a.id))
+      posts.forEach((p) => console.log(p.id))
       
       setAllPosts(posts)
       
