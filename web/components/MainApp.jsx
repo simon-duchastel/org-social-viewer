@@ -33,12 +33,13 @@ function MainApp({ url, onBack }) {
 
   // Set initial URL state when entering the app
   useEffect(() => {
-    if (!searchParams.get('view')) {
+    if (!searchParams.get('view') && mainUser) {
       const params = new URLSearchParams(searchParams)
       params.set('view', 'timeline')
+      params.set('user', mainUser.nick)
       router.push(`?${params.toString()}`)
     }
-  }, [])
+  }, [mainUser])
 
   // Handle browser back/forward navigation
   useEffect(() => {
@@ -54,11 +55,8 @@ function MainApp({ url, onBack }) {
         return
       }
       
-      // If we're on the timeline view and user pressed back, go to URL input
-      if (viewParam === 'timeline' && event.state?.fromTimeline) {
-        onBack()
-        return
-      }
+      // Don't interfere with normal back navigation - let the URL params handle the state
+      // The components will re-render based on the new URL parameters automatically
     }
 
     window.addEventListener('popstate', handlePopState)
@@ -119,20 +117,14 @@ function MainApp({ url, onBack }) {
     const params = new URLSearchParams(searchParams)
     params.set('view', 'profile')
     params.set('user', user.nick)
+    
+    // Always use push to create proper browser history entries
     router.push(`?${params.toString()}`)
   }
 
   const handleBack = () => {
-    if (currentView === 'profile') {
-      // From profile, go back to timeline
-      const params = new URLSearchParams(searchParams)
-      params.set('view', 'timeline')
-      params.delete('user')
-      router.push(`?${params.toString()}`)
-    } else {
-      // From timeline, go back to URL input
-      onBack()
-    }
+    // Let the browser handle back navigation naturally
+    window.history.back()
   }
 
   const handleRefresh = () => {
@@ -173,7 +165,7 @@ function MainApp({ url, onBack }) {
             transition={{ duration: 0.3 }}
           >
             <Timeline 
-              posts={allPosts}
+              posts={selectedUser ? allPosts.filter(post => post.user.nick === selectedUser.nick) : allPosts}
               users={[mainUser, ...followedUsers]}
               onProfileClick={handleProfileClick}
             />
