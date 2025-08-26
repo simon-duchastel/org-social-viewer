@@ -1,6 +1,6 @@
 'use client'
 import { motion } from 'framer-motion'
-import Post from './Post'
+import Post from '../ui/Post'
 import styles from './Profile.module.css'
 
 function Profile({ user, posts, onProfileClick, allUsers }) {

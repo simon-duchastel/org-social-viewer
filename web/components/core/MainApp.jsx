@@ -2,12 +2,12 @@
 import { useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
-import { fetchOrgSocial, fetchFollowedUsers } from '../utils/apiClient'
-import Header from './Header'
+import { fetchOrgSocial, fetchFollowedUsers } from '../../utils/apiClient'
+import Header from '../ui/Header'
 import Timeline from './Timeline'
 import Profile from './Profile'
-import LoadingSpinner from './LoadingSpinner'
-import ErrorMessage from './ErrorMessage'
+import LoadingSpinner from '../ui/LoadingSpinner'
+import ErrorMessage from '../ui/ErrorMessage'
 
 function MainApp({ url, onBack }) {
   const router = useRouter()

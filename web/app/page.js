@@ -3,8 +3,8 @@
 import { useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
-import URLInput from '../components/URLInput'
-import MainApp from '../components/MainApp'
+import URLInput from '../components/ui/URLInput'
+import MainApp from '../components/core/MainApp'
 
 export default function HomePage() {
   const router = useRouter()
