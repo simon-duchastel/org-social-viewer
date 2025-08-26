@@ -1,4 +1,4 @@
-# Org Social Viewer - Web Application
+# Web Application
 
 A Next.js-based web application for viewing and interacting with org-mode social media content.
 
@@ -21,20 +21,12 @@ A Next.js-based web application for viewing and interacting with org-mode social
 ## Getting Started
 
 ### Prerequisites
+- Node.js 18+
+- npm 9+
 
-- Node.js (v16 or higher)
-- npm or yarn
-
-### Installation
-
+### Quick Start
 ```bash
-cd web
 npm install
-```
-
-### Development
-
-```bash
 npm run dev
 ```
 
@@ -61,14 +53,81 @@ web/
 └── next.config.js    # Next.js configuration
 ```
 
-## Usage
+## Key Components
 
-1. Start the development server
-2. Upload an org-mode file using the file input
-3. Or enter a URL to an org-mode file
-4. Browse the parsed content through the timeline interface
-5. Click on profiles to view detailed information
+### MainApp (`components/MainApp.jsx`)
+- Main application container
+- Handles URL loading and file upload
+- Manages application state
 
-## Contributing
+### Timeline (`components/Timeline.jsx`)  
+- Displays chronological post feed
+- Handles post sorting and filtering
+- Integrates with Profile component
 
-This is part of the larger org-social-viewer project. Please see the main project README for contribution guidelines.
+### Profile (`components/Profile.jsx`)
+- Shows user metadata and stats
+- Displays followed users
+- Handles profile switching
+
+### Parser (`lib/orgSocialParser.js`)
+- Converts org-mode text to structured data
+- Handles timestamps, tags, mood, language
+- Extracts posts, profiles, and metadata
+
+## API Endpoints
+
+### `POST /api/parse`
+Parse org-mode content to JSON
+```javascript
+// Request
+{ content: "#+TITLE: My Feed\n* Posts\n..." }
+
+// Response  
+{ profile: {...}, posts: [...], error: null }
+```
+
+### `GET /api/fetch-and-parse?url=`
+Fetch remote .org file and parse
+```javascript
+// Response
+{ profile: {...}, posts: [...], error: null }
+```
+
+### `GET /api/fetch-followed?url=`
+Get followed users from .org file
+```javascript
+// Response
+{ followed: [{ nick: "alice", url: "/alice.org" }] }
+```
+
+## Org-mode Format
+
+For the authoritative org-mode format see the [org-mode social spec](https://github.com/tanrax/org-social).
+
+## State Management
+
+- URL params for navigation state
+- React state for UI components  
+- Browser history API for back/forward
+- Local error handling per component
+
+## Styling
+
+- CSS Modules for component styles
+- Global CSS for layout and typography
+- Framer Motion for animations
+- Responsive design with CSS Grid/Flexbox
+
+## Testing
+
+Run parser tests:
+```bash
+npm run test
+```
+
+Tests cover:
+- Org-mode parsing accuracy
+- Timestamp handling
+- Error cases and malformed data
+- Profile and post extraction
