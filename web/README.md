@@ -51,7 +51,7 @@ web/
 
 ### Detailed Documentation
 
-- **[Next.js App](app/README.md** - <TODO />
+- **[Next.js App](app/README.md)** - App Router structure, routing, and page components
   - **[API Endpoints](app/api/README.md)** - Backend API routes and data structures
 - **[React Components](components/README.md)** - UI components and their functionality
 - **[Core Library](lib/README.md)** - Org-mode parsing and data processing
