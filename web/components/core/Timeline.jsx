@@ -1,8 +1,8 @@
 'use client'
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { motion } from 'framer-motion'
-import Post from './Post'
-import LoadingSpinner from './LoadingSpinner'
+import Post from '../ui/Post'
+import LoadingSpinner from '../ui/LoadingSpinner'
 import styles from './Timeline.module.css'
 
 const POSTS_PER_PAGE = 20

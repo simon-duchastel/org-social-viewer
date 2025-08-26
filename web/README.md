@@ -1,14 +1,6 @@
-# Org Social Viewer - Web Application
+# Web Application
 
 A Next.js-based web application for viewing and interacting with org-mode social media content.
-
-## Features
-
-- **Org-mode File Upload**: Upload `.org` files containing social media data
-- **URL-based Loading**: Load org-mode files directly from URLs
-- **Interactive Timeline**: Browse through posts with an intuitive timeline interface
-- **Profile Management**: View and manage multiple social media profiles
-- **Real-time Parsing**: Parse org-mode syntax in real-time for immediate viewing
 
 ## Technology Stack
 
@@ -21,24 +13,16 @@ A Next.js-based web application for viewing and interacting with org-mode social
 ## Getting Started
 
 ### Prerequisites
+- Node.js 18+
+- npm 9+
 
-- Node.js (v16 or higher)
-- npm or yarn
-
-### Installation
-
+### Quick Start
 ```bash
-cd web
 npm install
-```
-
-### Development
-
-```bash
 npm run dev
 ```
 
-The application will be available at `http://localhost:3000`
+The application will be available at `http://localhost:<port>`, where `<port>` is output by the tool on the command line (usually 3000 but confirm before loading the application).
 
 ### Build
 
@@ -47,28 +31,32 @@ npm run build
 npm run start
 ```
 
-## Project Structure
+## Architecture
+
+### Project Structure
 
 ```
 web/
 ├── app/
+│   ├── api/           # Next.js API routes (see app/api/README.md)
 │   ├── layout.js      # Root layout
 │   ├── page.js        # Home page
 │   └── globals.css    # Global styles
-├── components/        # React components
-├── utils/            # Utility functions
-├── package.json      # Dependencies and scripts
-└── next.config.js    # Next.js configuration
+├── components/        # React components (see components/README.md)
+├── lib/               # Core parsing library (see lib/README.md)
+├── public/            # Static assets and sample data
+├── utils/             # Utility functions (see utils/README.md)
+├── package.json       # Dependencies and scripts
+└── next.config.js     # Next.js configuration
 ```
 
-## Usage
+## Org-mode Format
 
-1. Start the development server
-2. Upload an org-mode file using the file input
-3. Or enter a URL to an org-mode file
-4. Browse the parsed content through the timeline interface
-5. Click on profiles to view detailed information
+For the authoritative org-mode format see the [org-mode social spec](https://github.com/tanrax/org-social).
 
-## Contributing
+## Testing
 
-This is part of the larger org-social-viewer project. Please see the main project README for contribution guidelines.
+Run tests:
+```bash
+npm run test
+```

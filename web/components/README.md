@@ -1,0 +1,21 @@
+# React Components
+
+This directory contains all React components for the org-social-viewer web application.
+
+## Core Components (`core/`)
+Core components handle the main application logic, state management, and data coordination. These components form the backbone of the application and manage complex interactions between different parts of the system.
+
+See the [core components documentation](core/README.md) for more details.
+
+## UI Components (`ui/`)  
+UI components are reusable presentation components that focus on user interface elements and interactions. They handle visual display and user experience rather than application logic.
+
+See the [UI components documentation](ui/README.md) for more details.
+
+## Styling
+
+Each component has an associated CSS Module file (`.module.css`) providing:
+- Component-scoped styles
+- Responsive design patterns
+- Consistent theming and typography
+- Animation and transition effects
