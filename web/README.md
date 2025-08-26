@@ -50,15 +50,6 @@ web/
 └── next.config.js     # Next.js configuration
 ```
 
-### Detailed Documentation
-
-- **[Next.js App](app/README.md)** - App Router structure, routing, and page components
-  - **[API Endpoints](app/api/README.md)** - Backend API routes and data structures
-- **[React Components](components/README.md)** - UI components and their functionality
-- **[Core Library](lib/README.md)** - Org-mode parsing and data processing
-- **[Static Assets & Sample Data](public/README.md)** - Static files and example org-mode social data
-- **[Utility Functions](utils/README.md)** - Helper functions for API calls and date handling
-
 ## Org-mode Format
 
 For the authoritative org-mode format see the [org-mode social spec](https://github.com/tanrax/org-social).
