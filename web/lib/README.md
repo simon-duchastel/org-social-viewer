@@ -4,7 +4,7 @@ This directory contains the core parsing library for processing org-mode social 
 
 ## Parser (`orgSocialParser.js`)
 
-The main org-mode parser that converts org-mode text to structured JavaScript data.g
+The main org-mode parser that converts org-mode text to structured JavaScript data.
 
 ### Core Functions
 

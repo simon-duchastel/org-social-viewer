@@ -14,7 +14,7 @@ Fetches and parses a remote org-mode file via the `/api/fetch-and-parse` endpoin
 **Parameters**:
 - `url`: URL to the remote org-mode file
 
-**Returns**: Promise resolving to parsed org-social data (see the [API spec for details on the returned object](../app//api//README.md)).
+**Returns**: Promise resolving to parsed org-social data (see the [API spec for details on the returned object](../app/api/README.md)).
 
 #### `parseOrgSocialContent(content, sourceUrl = '')`
 Parses org-mode content via the `/api/parse` endpoint.
@@ -23,7 +23,7 @@ Parses org-mode content via the `/api/parse` endpoint.
 - `content`: Raw org-mode file content
 - `sourceUrl`: Optional source URL for context
 
-**Returns**: Promise resolving to parsed org-social data (see the [API spec for details on the returned object](../app//api//README.md)).
+**Returns**: Promise resolving to parsed org-social data (see the [API spec for details on the returned object](../app/api/README.md)).
 
 #### `fetchFollowedUsers(mainUser)`
 Fetches followed users for a given profile via the `/api/fetch-followed` endpoint.
@@ -31,7 +31,7 @@ Fetches followed users for a given profile via the `/api/fetch-followed` endpoin
 **Parameters**:
 - `mainUser`: User profile object containing follow information
 
-**Returns**: Promise resolving to followed users array (see the [API spec for details on the returned object](../app//api//README.md)).
+**Returns**: Promise resolving to followed users array (see the [API spec for details on the returned object](../app/api/README.md)).
 
 ### Error Handling
 All API functions include comprehensive error handling with:

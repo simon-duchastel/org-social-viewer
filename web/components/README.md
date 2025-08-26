@@ -10,7 +10,7 @@ See the [core components documentation](core/README.md) for more details.
 ## UI Components (`ui/`)  
 UI components are reusable presentation components that focus on user interface elements and interactions. They handle visual display and user experience rather than application logic.
 
-See the [UI components documentation](core/README.md) for more details.
+See the [UI components documentation](ui/README.md) for more details.
 
 ## Styling
 
