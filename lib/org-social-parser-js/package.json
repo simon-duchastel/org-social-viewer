@@ -1,0 +1,21 @@
+{
+  "name": "org-social-parser",
+  "version": "1.0.0",
+  "description": "A parser for the org-social file format.",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "test": "node test/index.test.js"
+  },
+  "dependencies": {
+    "unified": "^11.0.5",
+    "uniorg-parse": "^8.0.0"
+  },
+  "keywords": [
+    "org-social",
+    "org-mode",
+    "parser"
+  ],
+  "author": "",
+  "license": "ISC"
+}
