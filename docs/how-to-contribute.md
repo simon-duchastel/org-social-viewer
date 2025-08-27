@@ -8,6 +8,7 @@ This document outlines how to contribute to this codebase. You must strictly fol
 2. Make your changes.
 3. Smoke test your change. This may mean running the UI in the browser or on an emulator, or it may mean calling the function manually from the command line. Ensure your change properly addresses what you're trying to achieve, whether it be a new feature or a bug fix.
 4. Ensure all tests pass. Add any new tests. Read and follow the [testing guidelines](testing.md).
+5. Run lint checks and fix any code style issues.
 6. Make sure all documentation is up to date. Add or update any new documentation as-needed. Read and follow [the documentation guidelines](docs.md).
 
 ## Contribution Rules
@@ -18,7 +19,7 @@ This document outlines how to contribute to this codebase. You must strictly fol
 
 ## Project Philosophy
 
-1. The repository is organized by folders and sub-folders. Each folder should contain a logical grouping of files. Ex. the [web/componets/ui/](../web/components/ui/) folder contains UI React components. Each folder should have a single high-level purpose. Create a new folder in the relevant sub-folder whenever you find the current one is growing too big and/or the change you're making fits a sufficiently new purpose.
+1. The repository is organized by folders and sub-folders. Each folder should contain a logical grouping of files. Ex. the [web/components/ui/](../web/components/ui/) folder contains UI React components. Each folder should have a single high-level purpose. Create a new folder in the relevant sub-folder whenever you find the current one is growing too big and/or the change you're making fits a sufficiently new purpose.
 2. Keep files small and granular. Each file should have a single purpose. Create a new file in the relevant sub-folder whenever you find the current one is growing too big and/or the change you're making fits a sufficiently new purpose.
 3. Keep functions/classes small and granular. Each function/class should have a single purpose. Create a new function or class in the relevant file whenever you find the current one is growing too big and/or the change you're making fits a sufficiently new purpose.
 4. Code is self-documenting. Use comments only when absolutely necessary, ex. when there's a hidden gotcha in the code
