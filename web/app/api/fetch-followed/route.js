@@ -1,4 +1,4 @@
-import { fetchFollowedUsers } from '../../../lib/orgSocialParser.js'
+import { fetchFollowedUsers } from '../../../../lib/org-social-parser-js/src/index.js'
 
 export async function POST(request) {
   try {
