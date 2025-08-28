@@ -10,38 +10,59 @@ import LoadingSpinner from '../ui/LoadingSpinner'
 import ErrorMessage from '../ui/ErrorMessage'
 
 /**
- * Group replies under their parent posts and sort appropriately
+ * Group replies under their root parent posts and sort appropriately
  * - Parent posts are sorted by timestamp (newest first)
- * - Replies are grouped under their parent posts
+ * - Replies are grouped under their root parent posts (not immediate parents)
  * - Within each parent, replies are sorted chronologically (oldest first)
  */
 function groupRepliesWithParents(posts) {
   const postMap = new Map()
-  const parentPosts = []
+  const rootPosts = []
   const replies = []
   
-  // Separate parent posts and replies
+  // Create a map of all posts for quick lookup
   posts.forEach(post => {
     postMap.set(post.id, post)
+  })
+  
+  // Function to find the root parent of a post
+  const findRootParent = (post) => {
+    if (!post.isReply || !post.replyTo) {
+      return post // This is already a root post
+    }
     
+    const parent = postMap.get(post.replyTo)
+    if (!parent) {
+      return post // Parent not found, treat this as root
+    }
+    
+    return findRootParent(parent) // Recursively find root
+  }
+  
+  // Separate root posts and replies, and map each reply to its root parent
+  const replyToRootMap = new Map()
+  
+  posts.forEach(post => {
     if (post.isReply && post.replyTo) {
+      const rootParent = findRootParent(post)
+      replyToRootMap.set(post.id, rootParent.id)
       replies.push(post)
     } else {
-      parentPosts.push(post)
+      rootPosts.push(post)
     }
   })
   
-  // Sort parent posts by timestamp (newest first)
-  parentPosts.sort((a, b) => new Date(b.id) - new Date(a.id))
+  // Sort root posts by timestamp (newest first)
+  rootPosts.sort((a, b) => new Date(b.id) - new Date(a.id))
   
-  // Group replies by their parent ID
+  // Group replies by their root parent ID
   const replyGroups = new Map()
   replies.forEach(reply => {
-    const parentId = reply.replyTo
-    if (!replyGroups.has(parentId)) {
-      replyGroups.set(parentId, [])
+    const rootParentId = replyToRootMap.get(reply.id)
+    if (!replyGroups.has(rootParentId)) {
+      replyGroups.set(rootParentId, [])
     }
-    replyGroups.get(parentId).push(reply)
+    replyGroups.get(rootParentId).push(reply)
   })
   
   // Sort replies within each group chronologically (oldest first)
@@ -52,19 +73,20 @@ function groupRepliesWithParents(posts) {
   // Build the final grouped list
   const groupedPosts = []
   
-  parentPosts.forEach(parent => {
-    groupedPosts.push(parent)
+  rootPosts.forEach(rootPost => {
+    groupedPosts.push(rootPost)
     
-    // Add replies for this parent post
-    const parentReplies = replyGroups.get(parent.id)
-    if (parentReplies) {
-      groupedPosts.push(...parentReplies)
+    // Add replies for this root post
+    const rootReplies = replyGroups.get(rootPost.id)
+    if (rootReplies) {
+      groupedPosts.push(...rootReplies)
     }
   })
   
-  // Handle orphaned replies (replies without a parent in the current dataset)
+  // Handle orphaned replies (replies without a root parent in the current dataset)
   replies.forEach(reply => {
-    if (!postMap.has(reply.replyTo)) {
+    const rootParentId = replyToRootMap.get(reply.id)
+    if (!postMap.has(rootParentId)) {
       groupedPosts.push(reply)
     }
   })
