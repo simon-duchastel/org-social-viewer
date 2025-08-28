@@ -8,8 +8,8 @@
     "test": "node test/index.test.js"
   },
   "dependencies": {
-    "unified": "^11.0.5",
-    "uniorg-parse": "^8.0.0"
+    "unified": "11.0.5",
+    "uniorg-parse": "3.2.0"
   },
   "keywords": [
     "org-social",
