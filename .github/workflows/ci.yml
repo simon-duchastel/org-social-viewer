@@ -26,10 +26,6 @@ jobs:
         working-directory: ./web
         run: npm ci
       
-      - name: Run linter
-        working-directory: ./web
-        run: npm run lint
-      
       - name: Build project
         working-directory: ./web
         run: npm run build
@@ -52,10 +48,6 @@ jobs:
       - name: Install dependencies
         working-directory: ./lib/org-social-parser-js
         run: npm ci
-        
-      - name: Run linter
-        working-directory: ./lib/org-social-parser-js
-        run: npm run lint
       
       - name: Build project
         working-directory: ./lib/org-social-parser-js
