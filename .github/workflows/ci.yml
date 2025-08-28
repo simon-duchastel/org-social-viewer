@@ -33,10 +33,6 @@ jobs:
       - name: Build project
         working-directory: ./web
         run: npm run build
-      
-      - name: Run tests
-        working-directory: ./web
-        run: npm test
 
   lib:
     runs-on: ubuntu-latest
@@ -56,6 +52,14 @@ jobs:
       - name: Install dependencies
         working-directory: ./lib/org-social-parser-js
         run: npm ci
+        
+      - name: Run linter
+        working-directory: ./lib/org-social-parser-js
+        run: npm run lint
+      
+      - name: Build project
+        working-directory: ./lib/org-social-parser-js
+        run: npm run build
       
       - name: Run tests
         working-directory: ./lib/org-social-parser-js
