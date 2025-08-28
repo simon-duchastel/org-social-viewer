@@ -9,6 +9,69 @@ import Profile from './Profile'
 import LoadingSpinner from '../ui/LoadingSpinner'
 import ErrorMessage from '../ui/ErrorMessage'
 
+/**
+ * Group replies under their parent posts and sort appropriately
+ * - Parent posts are sorted by timestamp (newest first)
+ * - Replies are grouped under their parent posts
+ * - Within each parent, replies are sorted chronologically (oldest first)
+ */
+function groupRepliesWithParents(posts) {
+  const postMap = new Map()
+  const parentPosts = []
+  const replies = []
+  
+  // Separate parent posts and replies
+  posts.forEach(post => {
+    postMap.set(post.id, post)
+    
+    if (post.isReply && post.replyTo) {
+      replies.push(post)
+    } else {
+      parentPosts.push(post)
+    }
+  })
+  
+  // Sort parent posts by timestamp (newest first)
+  parentPosts.sort((a, b) => new Date(b.id) - new Date(a.id))
+  
+  // Group replies by their parent ID
+  const replyGroups = new Map()
+  replies.forEach(reply => {
+    const parentId = reply.replyTo
+    if (!replyGroups.has(parentId)) {
+      replyGroups.set(parentId, [])
+    }
+    replyGroups.get(parentId).push(reply)
+  })
+  
+  // Sort replies within each group chronologically (oldest first)
+  replyGroups.forEach(replyGroup => {
+    replyGroup.sort((a, b) => new Date(a.id) - new Date(b.id))
+  })
+  
+  // Build the final grouped list
+  const groupedPosts = []
+  
+  parentPosts.forEach(parent => {
+    groupedPosts.push(parent)
+    
+    // Add replies for this parent post
+    const parentReplies = replyGroups.get(parent.id)
+    if (parentReplies) {
+      groupedPosts.push(...parentReplies)
+    }
+  })
+  
+  // Handle orphaned replies (replies without a parent in the current dataset)
+  replies.forEach(reply => {
+    if (!postMap.has(reply.replyTo)) {
+      groupedPosts.push(reply)
+    }
+  })
+  
+  return groupedPosts
+}
+
 function MainApp({ url, onBack }) {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -104,11 +167,10 @@ function MainApp({ url, onBack }) {
         })
       })
       
-      // Sort by timestamp (newest first)
-      posts.sort((a, b) => new Date(b.id) - new Date(a.id))
-      posts.forEach((p) => console.log(p.id))
+      // Group replies under their parent posts
+      const groupedPosts = groupRepliesWithParents(posts)
       
-      setAllPosts(posts)
+      setAllPosts(groupedPosts)
       
     } catch (err) {
       console.error('Error loading org-social data:', err)

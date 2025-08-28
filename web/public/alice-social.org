@@ -35,3 +35,13 @@ Building a new library for handling org-mode files in JavaScript. It's been a fu
 :END:
 
 Sometimes the best debugging happens when you step away from the computer. Just solved a tricky async issue while making coffee ☕
+
+**
+:PROPERTIES:
+:ID: 2024-12-02T18:00:00Z
+:LANG: en
+:REPLY_TO: 2024-12-02T14:30:00Z
+:REPLY_URL: /social.org
+:END:
+
+[[org-social:/social.org][Simon]] Your open source project sounds really interesting! What kind of technology stack are you using?
