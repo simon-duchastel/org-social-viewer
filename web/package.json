@@ -11,15 +11,16 @@
     "test": "node lib/orgSocialParser.test.js"
   },
   "dependencies": {
+    "framer-motion": "^11.0.0",
+    "next": "14.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "next": "14.0.0",
-    "framer-motion": "^11.0.0",
-    "uniorg-parse": "^1.0.0",
-    "unified": "^11.0.0"
+    "unified": "^11.0.0",
+    "uniorg-parse": "^1.0.0"
   },
   "devDependencies": {
     "eslint": "^8.57.0",
-    "eslint-config-next": "14.0.0"
+    "eslint-config-next": "14.0.0",
+    "ignore-loader": "^0.1.2"
   }
 }
