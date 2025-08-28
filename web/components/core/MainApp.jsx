@@ -16,6 +16,8 @@ import ErrorMessage from '../ui/ErrorMessage'
  * - Within each parent, replies are sorted chronologically (oldest first)
  */
 function groupRepliesWithParents(posts) {
+  console.log('🔍 Starting groupRepliesWithParents with', posts.length, 'posts')
+  
   const postMap = new Map()
   const rootPosts = []
   const replies = []
@@ -24,6 +26,8 @@ function groupRepliesWithParents(posts) {
   posts.forEach(post => {
     postMap.set(post.id, post)
   })
+  
+  console.log('📊 Created postMap with', postMap.size, 'entries')
   
   // Function to find the root parent of a post
   const findRootParent = (post) => {
@@ -42,15 +46,28 @@ function groupRepliesWithParents(posts) {
   // Separate root posts and replies, and map each reply to its root parent
   const replyToRootMap = new Map()
   
+  console.log('🔄 Processing posts to separate root posts and replies...')
   posts.forEach(post => {
     if (post.isReply && post.replyTo) {
       const rootParent = findRootParent(post)
       replyToRootMap.set(post.id, rootParent.id)
       replies.push(post)
+      
+      // Debug the specific Andros reply
+      if (post.content && post.content.includes('Nice work! I have added your repositories here')) {
+        console.log('🎯 Found Andros reply during separation:', {
+          id: post.id,
+          replyTo: post.replyTo,
+          rootParentId: rootParent.id,
+          rootParentExists: postMap.has(rootParent.id)
+        })
+      }
     } else {
       rootPosts.push(post)
     }
   })
+  
+  console.log('📈 Separated into:', rootPosts.length, 'root posts and', replies.length, 'replies')
   
   // Sort root posts by timestamp (newest first)
   rootPosts.sort((a, b) => new Date(b.id) - new Date(a.id))
@@ -65,6 +82,8 @@ function groupRepliesWithParents(posts) {
     replyGroups.get(rootParentId).push(reply)
   })
   
+  console.log('🗂️ Grouped replies into', replyGroups.size, 'groups')
+  
   // Sort replies within each group chronologically (oldest first)
   replyGroups.forEach(replyGroup => {
     replyGroup.sort((a, b) => new Date(a.id) - new Date(b.id))
@@ -72,24 +91,49 @@ function groupRepliesWithParents(posts) {
   
   // Build the final grouped list
   const groupedPosts = []
+  const processedPosts = new Set()  // Track which posts we've already added
   
   rootPosts.forEach(rootPost => {
     groupedPosts.push(rootPost)
+    processedPosts.add(rootPost.id)
     
     // Add replies for this root post
     const rootReplies = replyGroups.get(rootPost.id)
     if (rootReplies) {
-      groupedPosts.push(...rootReplies)
+      rootReplies.forEach(reply => {
+        groupedPosts.push(reply)
+        processedPosts.add(reply.id)
+      })
     }
   })
   
-  // Handle orphaned replies (replies without a root parent in the current dataset)
-  replies.forEach(reply => {
-    const rootParentId = replyToRootMap.get(reply.id)
-    if (!postMap.has(rootParentId)) {
-      groupedPosts.push(reply)
+  console.log('📝 After adding root posts and their replies, have', groupedPosts.length, 'posts')
+  
+  // Add any remaining posts that weren't processed yet
+  // This handles cases where a reply's root parent was itself classified as a reply
+  let remainingCount = 0
+  posts.forEach(post => {
+    if (!processedPosts.has(post.id)) {
+      groupedPosts.push(post)
+      remainingCount++
+      
+      // Debug the specific Andros reply if it's in remaining posts
+      if (post.content && post.content.includes('Nice work! I have added your repositories here')) {
+        console.log('🎯 Andros reply found in REMAINING posts:', {
+          id: post.id,
+          replyTo: post.replyTo,
+          isReply: post.isReply
+        })
+      }
     }
   })
+  
+  console.log('👨‍👩‍👧‍👦 Added', orphanedCount, 'orphaned replies')
+  console.log('✅ Final result:', groupedPosts.length, 'posts')
+  
+  // Final check for Andros reply
+  const androsInFinal = groupedPosts.find(p => p.content && p.content.includes('Nice work! I have added your repositories here'))
+  console.log('🎯 Andros reply in final result:', !!androsInFinal)
   
   return groupedPosts
 }
@@ -190,7 +234,43 @@ function MainApp({ url, onBack }) {
       })
       
       // Group replies under their parent posts
+      console.log('All posts before grouping:', posts.length)
+      
+      // Look specifically for the Andros reply
+      const androsReply = posts.find(p => p.content && p.content.includes('Nice work! I have added your repositories here'))
+      console.log('Found Andros reply before grouping:', !!androsReply)
+      if (androsReply) {
+        console.log('Andros reply details:', { 
+          id: androsReply.id, 
+          isReply: androsReply.isReply, 
+          replyTo: androsReply.replyTo, 
+          content: androsReply.content?.slice(0, 100),
+          user: androsReply.user?.nick
+        })
+      }
+      
       const groupedPosts = groupRepliesWithParents(posts)
+      
+      console.log('Grouped posts after processing:', groupedPosts.length)
+      
+      // Check if Andros reply is still there after grouping
+      const androsReplyAfter = groupedPosts.find(p => p.content && p.content.includes('Nice work! I have added your repositories here'))
+      console.log('Found Andros reply after grouping:', !!androsReplyAfter)
+      
+      // Show which posts were lost
+      const postIds = new Set(posts.map(p => p.id))
+      const groupedIds = new Set(groupedPosts.map(p => p.id))
+      const lostPosts = posts.filter(p => !groupedIds.has(p.id))
+      console.log('Lost posts:', lostPosts.length)
+      if (lostPosts.length > 0) {
+        console.log('Lost post details:', lostPosts.map(p => ({ 
+          id: p.id, 
+          isReply: p.isReply, 
+          replyTo: p.replyTo, 
+          content: p.content?.slice(0, 50),
+          user: p.user?.nick
+        })))
+      }
       
       setAllPosts(groupedPosts)
       
