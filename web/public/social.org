@@ -43,6 +43,15 @@ Check out the features:
 
 [[org-social:/alice-social.org][Alice]] Great question! Here's what I think about that topic.
 
+**
+:PROPERTIES:
+:ID: 2024-12-04T11:45:00Z
+:LANG: en
+:TAGS: testing links
+:END:
+
+Testing hyperlink fixes: [[github.com/tanrax/awesome-org-social][awesome org-social project]] and also a standalone domain github.com/simon-duchastel should work now.
+
 * Polls
 
 **
