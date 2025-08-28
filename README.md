@@ -8,6 +8,8 @@ View social media content stored in org-mode format outside of Emacs. See the [o
 
 ```
 org-social-viewer/
-├── web/                   # Next.js web application
-└── LICENSE                # Project license
+├── web/                       # Next.js web application
+├── lib/      
+│   └── orgi-social-parser-js  # Javascript library for parsing org social files
+└── LICENSE                    # Project license
 ```

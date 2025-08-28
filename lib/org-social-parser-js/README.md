@@ -1,14 +1,39 @@
-# Core Library
+# org-social-parser
 
-This directory contains the core parsing library for processing org-mode social media files.
+A JavaScript library for parsing `.org` files that follow the [org-social spec](https://github.com/tanrax/org-social).
 
-## Parser (`orgSocialParser.js`)
+## Installation
 
-The main org-mode parser that converts org-mode text to structured JavaScript data.
+```bash
+npm install org-social-parser
+```
 
-### Core Functions
+## Usage
 
-#### `parseOrgFile(content)`
+```javascript
+import { parseOrgSocial } from 'org-social-parser';
+
+const orgFileContent = `
+#+TITLE: Test User
+#+NICK: testuser
+
+* Posts
+
+**
+:PROPERTIES:
+:ID: 2025-01-01T10:00:00+00:00
+:END:
+
+This is a test post.
+`;
+
+const parsedData = parseOrgSocial(orgFileContent);
+
+console.log(parsedData);
+```
+
+## Core Functions
+
 Main parsing function that processes org-mode content.
 
 **Input**: Raw org-mode file content as string
@@ -27,7 +52,7 @@ Main parsing function that processes org-mode content.
 }
 ```
 
-#### Post Structure
+### Post Structure
 Each parsed post contains:
 - `id`: Unique identifier
 - `timestamp`: Parsed date/time
@@ -36,15 +61,15 @@ Each parsed post contains:
 - `language`: Optional language tag
 - `tags`: Array of custom tags
 
-#### Profile Structure
+### Profile Structure
 Parsed profile information includes:
 - User metadata (title, nickname, avatar)
 - Followed users list with navigation URLs
 - Profile settings and preferences
 
-### Testing
+## Testing
 
-Tests are located in `orgSocialParser.test.js`.
+Tests are located in `test/index.test.js`.
 
 Run tests with:
 ```bash

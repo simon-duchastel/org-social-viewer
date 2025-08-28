@@ -1,4 +1,4 @@
-import { fetchOrgSocial } from '../../../lib/orgSocialParser.js'
+import { fetchOrgSocial } from '../../../../lib/org-social-parser-js/src/index.js'
 
 export async function GET(request) {
   try {

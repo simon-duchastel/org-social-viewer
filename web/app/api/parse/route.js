@@ -1,4 +1,4 @@
-import { parseOrgSocial } from '../../../lib/orgSocialParser.js'
+import { parseOrgSocial } from '../../../../lib/org-social-parser-js/src/index.js'
 
 export async function POST(request) {
   try {
