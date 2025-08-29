@@ -1,9 +1,13 @@
 'use client'
 import { motion } from 'framer-motion'
+import { useState } from 'react'
 import Post from '../ui/Post'
+import AvatarModal from '../ui/AvatarModal'
 import styles from './Profile.module.css'
 
 function Profile({ user, posts, onProfileClick, allUsers }) {
+  const [isAvatarModalOpen, setIsAvatarModalOpen] = useState(false)
+
   if (!user) {
     return (
       <div className={styles.profileError}>
@@ -49,6 +53,8 @@ function Profile({ user, posts, onProfileClick, allUsers }) {
               src={getAvatarUrl(user)} 
               alt={`${user.nick}&apos;s avatar`}
               className={styles.profileAvatar}
+              onClick={() => setIsAvatarModalOpen(true)}
+              style={{ cursor: 'pointer' }}
             />
           </motion.div>
           
@@ -207,6 +213,13 @@ function Profile({ user, posts, onProfileClick, allUsers }) {
           </div>
         )}
       </motion.div>
+
+      <AvatarModal
+        isOpen={isAvatarModalOpen}
+        onClose={() => setIsAvatarModalOpen(false)}
+        avatarUrl={getAvatarUrl(user)}
+        userName={user.title || user.nick}
+      />
     </motion.div>
   )
 }
