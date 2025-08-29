@@ -18,7 +18,7 @@
     "parser"
   ],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "vitest": "^3.2.4"
   }
