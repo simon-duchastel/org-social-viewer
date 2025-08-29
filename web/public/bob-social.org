@@ -26,6 +26,16 @@ Been thinking about when to split a monolith into microservices. The complexity 
 
 Making great progress on my Rust CLI tool. The borrow checker was fighting me yesterday but everything clicked today!
 
+**
+:PROPERTIES:
+:ID: 2024-12-02T08:30:00Z
+:LANG: en
+:REPLY_TO: 2024-12-01T08:00:00Z
+:REPLY_URL: /alice-social.org
+:END:
+
+[[org-social:/alice-social.org][Alice]] That Vue 3 update sounds awesome! I've been considering using it for my next frontend project. How's the learning curve?
+
 * Polls
 
 **

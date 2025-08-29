@@ -3,11 +3,13 @@ import { useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { fetchOrgSocial, fetchFollowedUsers } from '../../utils/apiClient'
+import { groupRepliesWithParents } from '../../utils/postGrouping'
 import Header from '../ui/Header'
 import Timeline from './Timeline'
 import Profile from './Profile'
 import LoadingSpinner from '../ui/LoadingSpinner'
 import ErrorMessage from '../ui/ErrorMessage'
+
 
 function MainApp({ url, onBack }) {
   const router = useRouter()
@@ -104,11 +106,9 @@ function MainApp({ url, onBack }) {
         })
       })
       
-      // Sort by timestamp (newest first)
-      posts.sort((a, b) => new Date(b.id) - new Date(a.id))
-      posts.forEach((p) => console.log(p.id))
-      
-      setAllPosts(posts)
+      // Group replies under their parent posts
+      const groupedPosts = groupRepliesWithParents(posts)
+      setAllPosts(groupedPosts)
       
     } catch (err) {
       console.error('Error loading org-social data:', err)
