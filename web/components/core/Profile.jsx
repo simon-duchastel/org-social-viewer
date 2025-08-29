@@ -70,7 +70,7 @@ function Profile({ user, posts, onProfileClick, allUsers }) {
               </h1>
               <div className={styles.profileUsernameRow}>
                 <p className={styles.profileUsername}>@{user.nick}</p>
-                <ViewSourceButton 
+                <ViewSourceButton
                   sourceUrl={user.sourceUrl}
                   className="usernameBtn"
                   title="View source file for this profile"

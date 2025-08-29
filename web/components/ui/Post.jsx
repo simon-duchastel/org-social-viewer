@@ -89,7 +89,7 @@ function Post({ post, onProfileClick, allUsers }) {
               <span className={styles.postTimestamp} title={post.fullTimestamp || post.timestamp}>
                 {post.formattedTimestamp || 'invalid date'}
               </span>
-              <ViewSourceButton 
+              <ViewSourceButton
                 sourceUrl={post.sourceUrl}
                 postId={post.id}
                 className="timestampBtn"
