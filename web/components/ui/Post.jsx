@@ -1,5 +1,6 @@
 'use client'
 import { motion } from 'framer-motion'
+import ViewSourceButton from './ViewSourceButton'
 import styles from './Post.module.css'
 
 function Post({ post, onProfileClick, allUsers }) {
@@ -42,6 +43,12 @@ function Post({ post, onProfileClick, allUsers }) {
       whileHover={{ backgroundColor: 'var(--twitter-hover-bg)' }}
       transition={{ duration: 0.1 }}
     >
+      <ViewSourceButton 
+        sourceUrl={post.sourceUrl}
+        postId={post.id}
+        className="postBtn"
+        title="View source file for this post"
+      />
       {post.isReply && (
         <div className={styles.replyIndicator}>
           <div className={styles.replyLine}></div>

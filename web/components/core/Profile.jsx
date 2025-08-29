@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { useState } from 'react'
 import Post from '../ui/Post'
 import AvatarModal from '../ui/AvatarModal'
+import ViewSourceButton from '../ui/ViewSourceButton'
 import styles from './Profile.module.css'
 
 function Profile({ user, posts, onProfileClick, allUsers }) {
@@ -41,6 +42,11 @@ function Profile({ user, posts, onProfileClick, allUsers }) {
       <div className={styles.profileHeader}>
         <div className={styles.profileBanner}>
           {/* Could add banner image here */}
+          <ViewSourceButton 
+            sourceUrl={user.sourceUrl}
+            className="profileBtn"
+            title="View source file for this profile"
+          />
         </div>
         
         <div className={styles.profileInfo}>
