@@ -1,6 +1,7 @@
 'use client';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect } from 'react';
+import Image from 'next/image';
 import styles from './AvatarModal.module.css';
 
 function AvatarModal({ isOpen, onClose, avatarUrl, userName }) {
@@ -60,10 +61,13 @@ function AvatarModal({ isOpen, onClose, avatarUrl, userName }) {
             </div>
 
             <div className={styles.avatarModalImageContainer}>
-              <img
+              <Image
                 src={avatarUrl}
                 alt={`${userName}&apos;s avatar`}
                 className={styles.avatarModalImage}
+                width={400}
+                height={400}
+                priority
               />
             </div>
           </motion.div>

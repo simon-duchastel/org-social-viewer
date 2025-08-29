@@ -1,6 +1,7 @@
 'use client';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
+import Image from 'next/image';
 import Post from '../ui/Post';
 import AvatarModal from '../ui/AvatarModal';
 import ViewSourceButton from '../ui/ViewSourceButton';
@@ -50,12 +51,15 @@ function Profile({ user, posts, onProfileClick, allUsers }) {
             whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.2 }}
           >
-            <img
+            <Image
               src={getAvatarUrl(user)}
               alt={`${user.nick}&apos;s avatar`}
               className={styles.profileAvatar}
               onClick={() => setIsAvatarModalOpen(true)}
               style={{ cursor: 'pointer' }}
+              width={80}
+              height={80}
+              priority
             />
           </motion.div>
 
@@ -167,9 +171,11 @@ function Profile({ user, posts, onProfileClick, allUsers }) {
                 onClick={() => handleFollowClick(follow)}
               >
                 <div className={styles.followingAvatar}>
-                  <img
+                  <Image
                     src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiByeD0iMjAiIGZpbGw9IiNFNUU3RUIiLz4KPHBhdGggZD0iTTEyIDEyQzkuNzkgMTIgOCAxMC4yMSA4IDhTOS43OSA0IDEyIDRTMTYgNS43OSAxNiA4UzE0LjIxIDEyIDEyIDEyWk0xMiAxNEMxNi40MiAxNCAyMCAxNS43OSAyMCAyMFYyMkg0VjIwQzQgMTUuNzkgNy41OCAxNCAxMiAxNFoiIGZpbGw9IiM5Q0E0QUYiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDgsIDgpIi8+Cjwvc3ZnPgo='
                     alt={`${follow.nick}&apos;s avatar`}
+                    width={40}
+                    height={40}
                   />
                 </div>
                 <div className={styles.followingInfo}>

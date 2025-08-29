@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { fetchOrgSocial, fetchFollowedUsers } from '../../utils/apiClient';
@@ -28,7 +28,7 @@ function MainApp({ url, onBack }) {
     ? [mainUser, ...followedUsers].find(user => user?.nick === selectedUserNick)
     : null;
 
-  const loadOrgSocial = async () => {
+  const loadOrgSocial = useCallback(async () => {
     setLoading(true);
     setError(null);
 
@@ -77,11 +77,11 @@ function MainApp({ url, onBack }) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [url]);
 
   useEffect(() => {
     loadOrgSocial();
-  }, [url, loadOrgSocial]);
+  }, [loadOrgSocial]);
 
   // Set initial URL state when entering the app
   useEffect(() => {

@@ -1,6 +1,7 @@
 'use client';
 import { motion } from 'framer-motion';
 import ViewSourceButton from './ViewSourceButton';
+import Image from 'next/image';
 import styles from './Post.module.css';
 
 function Post({ post, onProfileClick, allUsers }) {
@@ -58,10 +59,12 @@ function Post({ post, onProfileClick, allUsers }) {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
-          <img
+          <Image
             src={getAvatarUrl(post.user)}
             alt={`${post.user.nick}'s avatar`}
             onClick={handleProfileClick}
+            width={40}
+            height={40}
           />
         </motion.div>
 
