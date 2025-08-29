@@ -1,5 +1,6 @@
 'use client'
 import { motion } from 'framer-motion'
+import ViewSourceButton from './ViewSourceButton'
 import styles from './Post.module.css'
 
 function Post({ post, onProfileClick, allUsers }) {
@@ -84,6 +85,12 @@ function Post({ post, onProfileClick, allUsers }) {
               <span className={styles.postTimestamp} title={post.fullTimestamp || post.timestamp}>
                 {post.formattedTimestamp || 'invalid date'}
               </span>
+              <ViewSourceButton 
+                sourceUrl={post.sourceUrl}
+                postId={post.id}
+                className="timestampBtn"
+                title="View source file for this post"
+              />
             </div>
 
             {(post.properties.LANG || post.properties.CLIENT) && (

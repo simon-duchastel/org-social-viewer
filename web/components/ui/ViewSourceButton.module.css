@@ -1,0 +1,135 @@
+.viewSourceBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: 1rem;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  color: var(--twitter-secondary-text);
+  position: relative;
+  white-space: nowrap;
+}
+
+.viewSourceBtn:hover {
+  background: var(--twitter-hover-bg);
+  color: var(--twitter-blue);
+}
+
+.sourceIcon {
+  font-size: 0.75rem;
+  transition: transform 0.2s ease;
+}
+
+.sourceText {
+  font-size: 0.75rem;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.viewSourceBtn:active .sourceIcon {
+  transform: scale(0.9);
+}
+
+/* Positioning variants */
+.viewSourceBtn.postBtn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  opacity: 0.6;
+  transition: opacity 0.2s ease, transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.viewSourceBtn.postBtn:hover {
+  opacity: 1;
+}
+
+.viewSourceBtn.timestampBtn {
+  margin-left: 0.5rem;
+  padding: 0.125rem 0.375rem;
+  opacity: 0.7;
+  transition: opacity 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.viewSourceBtn.timestampBtn:hover {
+  opacity: 1;
+}
+
+.viewSourceBtn.usernameBtn {
+  padding: 0.125rem 0.375rem;
+  opacity: 0.7;
+  transition: opacity 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.viewSourceBtn.usernameBtn:hover {
+  opacity: 1;
+}
+
+.viewSourceBtn.profileBtn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  backdrop-filter: blur(4px);
+  width: 32px;
+  height: 32px;
+  z-index: 20;
+}
+
+.viewSourceBtn.profileBtn:hover {
+  background: rgba(29, 155, 240, 0.8);
+  color: white;
+}
+
+.viewSourceBtn.profileBtn .sourceIcon {
+  font-size: 0.9rem;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .viewSourceBtn.postBtn {
+    top: 0.25rem;
+    right: 0.25rem;
+    width: 20px;
+    height: 20px;
+  }
+  
+  .viewSourceBtn.postBtn .sourceIcon {
+    font-size: 0.7rem;
+  }
+  
+  .viewSourceBtn.profileBtn {
+    top: 0.5rem;
+    right: 0.5rem;
+    width: 28px;
+    height: 28px;
+  }
+  
+  .viewSourceBtn.profileBtn .sourceIcon {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .viewSourceBtn.postBtn {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .viewSourceBtn.postBtn .sourceIcon {
+    font-size: 0.65rem;
+  }
+  
+  .viewSourceBtn.profileBtn {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .viewSourceBtn.profileBtn .sourceIcon {
+    font-size: 0.7rem;
+  }
+}
