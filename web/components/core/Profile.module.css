@@ -66,6 +66,12 @@
   line-height: 1.2;
 }
 
+.profileUsernameRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .profileUsername {
   font-size: 1rem;
   color: var(--twitter-secondary-text);

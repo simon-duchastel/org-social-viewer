@@ -43,12 +43,6 @@ function Post({ post, onProfileClick, allUsers }) {
       whileHover={{ backgroundColor: 'var(--twitter-hover-bg)' }}
       transition={{ duration: 0.1 }}
     >
-      <ViewSourceButton 
-        sourceUrl={post.sourceUrl}
-        postId={post.id}
-        className="postBtn"
-        title="View source file for this post"
-      />
       {post.isReply && (
         <div className={styles.replyIndicator}>
           <div className={styles.replyLine}></div>
@@ -91,6 +85,12 @@ function Post({ post, onProfileClick, allUsers }) {
               <span className={styles.postTimestamp} title={post.fullTimestamp || post.timestamp}>
                 {post.formattedTimestamp || 'invalid date'}
               </span>
+              <ViewSourceButton 
+                sourceUrl={post.sourceUrl}
+                postId={post.id}
+                className="timestampBtn"
+                title="View source file for this post"
+              />
             </div>
 
             {(post.properties.LANG || post.properties.CLIENT) && (

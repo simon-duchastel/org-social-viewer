@@ -2,7 +2,7 @@
 import { motion } from 'framer-motion'
 import styles from './ViewSourceButton.module.css'
 
-function ViewSourceButton({ sourceUrl, postId, className = '', title = 'View source file' }) {
+function ViewSourceButton({ sourceUrl, postId, className = '', title = 'View source file', showText = true }) {
   const handleClick = (e) => {
     e.stopPropagation()
     
@@ -27,6 +27,7 @@ function ViewSourceButton({ sourceUrl, postId, className = '', title = 'View sou
       aria-label={title}
     >
       <span className={styles.sourceIcon}>📋</span>
+      {showText && <span className={styles.sourceText}>view source</span>}
     </motion.button>
   )
 }

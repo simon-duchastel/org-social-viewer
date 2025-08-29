@@ -42,11 +42,6 @@ function Profile({ user, posts, onProfileClick, allUsers }) {
       <div className={styles.profileHeader}>
         <div className={styles.profileBanner}>
           {/* Could add banner image here */}
-          <ViewSourceButton 
-            sourceUrl={user.sourceUrl}
-            className="profileBtn"
-            title="View source file for this profile"
-          />
         </div>
         
         <div className={styles.profileInfo}>
@@ -69,7 +64,14 @@ function Profile({ user, posts, onProfileClick, allUsers }) {
               <h1 className={styles.profileDisplayName}>
                 {user.title || user.nick}
               </h1>
-              <p className={styles.profileUsername}>@{user.nick}</p>
+              <div className={styles.profileUsernameRow}>
+                <p className={styles.profileUsername}>@{user.nick}</p>
+                <ViewSourceButton 
+                  sourceUrl={user.sourceUrl}
+                  className="usernameBtn"
+                  title="View source file for this profile"
+                />
+              </div>
             </div>
             
             {user.description && (

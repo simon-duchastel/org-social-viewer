@@ -2,16 +2,16 @@
   background: none;
   border: none;
   cursor: pointer;
-  padding: 0.25rem;
-  border-radius: 50%;
+  padding: 0.25rem 0.5rem;
+  border-radius: 1rem;
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 24px;
+  gap: 0.25rem;
   color: var(--twitter-secondary-text);
   position: relative;
+  white-space: nowrap;
 }
 
 .viewSourceBtn:hover {
@@ -22,6 +22,12 @@
 .sourceIcon {
   font-size: 0.75rem;
   transition: transform 0.2s ease;
+}
+
+.sourceText {
+  font-size: 0.75rem;
+  font-weight: 500;
+  transition: color 0.2s ease;
 }
 
 .viewSourceBtn:active .sourceIcon {
@@ -38,6 +44,27 @@
 }
 
 .viewSourceBtn.postBtn:hover {
+  opacity: 1;
+}
+
+.viewSourceBtn.timestampBtn {
+  margin-left: 0.5rem;
+  padding: 0.125rem 0.375rem;
+  opacity: 0.7;
+  transition: opacity 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.viewSourceBtn.timestampBtn:hover {
+  opacity: 1;
+}
+
+.viewSourceBtn.usernameBtn {
+  padding: 0.125rem 0.375rem;
+  opacity: 0.7;
+  transition: opacity 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.viewSourceBtn.usernameBtn:hover {
   opacity: 1;
 }
 
