@@ -1,20 +1,20 @@
-'use client'
-import { motion } from 'framer-motion'
-import styles from './ViewSourceButton.module.css'
+'use client';
+import { motion } from 'framer-motion';
+import styles from './ViewSourceButton.module.css';
 
 function ViewSourceButton({ sourceUrl, postId, className = '', title = 'View source file', showText = true }) {
   const handleClick = (e) => {
-    e.stopPropagation()
-    
+    e.stopPropagation();
+
     // Build the URL - if postId is provided, add anchor link
-    const url = postId ? `${sourceUrl}#${postId}` : sourceUrl
-    
+    const url = postId ? `${sourceUrl}#${postId}` : sourceUrl;
+
     // Open in new tab
-    window.open(url, '_blank', 'noopener,noreferrer')
-  }
+    window.open(url, '_blank', 'noopener,noreferrer');
+  };
 
   if (!sourceUrl) {
-    return null
+    return null;
   }
 
   return (
@@ -29,7 +29,7 @@ function ViewSourceButton({ sourceUrl, postId, className = '', title = 'View sou
       <span className={styles.sourceIcon}>📋</span>
       {showText && <span className={styles.sourceText}>view source</span>}
     </motion.button>
-  )
+  );
 }
 
-export default ViewSourceButton
+export default ViewSourceButton;

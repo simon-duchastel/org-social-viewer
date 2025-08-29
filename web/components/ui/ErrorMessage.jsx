@@ -1,23 +1,23 @@
-'use client'
-import { motion } from 'framer-motion'
-import styles from './ErrorMessage.module.css'
+'use client';
+import { motion } from 'framer-motion';
+import styles from './ErrorMessage.module.css';
 
 function ErrorMessage({ message, onRetry, onBack, showRetry = true, showBack = true }) {
   return (
     <div className={styles.errorMessageContainer}>
-      <motion.div 
+      <motion.div
         className={styles.errorContent}
         initial={{ opacity: 0, scale: 0.9, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
-        transition={{ duration: 0.4, ease: "easeOut" }}
+        transition={{ duration: 0.4, ease: 'easeOut' }}
       >
-        <motion.div 
+        <motion.div
           className={styles.errorIcon}
-          animate={{ 
+          animate={{
             rotate: [0, -10, 10, -10, 0],
             scale: [1, 1.1, 1]
           }}
-          transition={{ 
+          transition={{
             duration: 2,
             repeat: Infinity,
             repeatDelay: 3
@@ -25,14 +25,14 @@ function ErrorMessage({ message, onRetry, onBack, showRetry = true, showBack = t
         >
           ⚠️
         </motion.div>
-        
+
         <h3 className={styles.errorTitle}>Something went wrong</h3>
-        
+
         <p className={styles.errorText}>{message}</p>
-        
+
         <div className={styles.errorActions}>
           {showRetry && onRetry && (
-            <motion.button 
+            <motion.button
               className={`${styles.btn} ${styles.btnPrimary}`}
               onClick={onRetry}
               whileHover={{ scale: 1.05 }}
@@ -42,9 +42,9 @@ function ErrorMessage({ message, onRetry, onBack, showRetry = true, showBack = t
               Try Again
             </motion.button>
           )}
-          
+
           {showBack && onBack && (
-            <motion.button 
+            <motion.button
               className={styles.btn}
               onClick={onBack}
               whileHover={{ scale: 1.05 }}
@@ -55,7 +55,7 @@ function ErrorMessage({ message, onRetry, onBack, showRetry = true, showBack = t
             </motion.button>
           )}
         </div>
-        
+
         <details className={styles.errorDetails}>
           <summary>Technical Details</summary>
           <div className={styles.errorDetailsContent}>
@@ -66,7 +66,7 @@ function ErrorMessage({ message, onRetry, onBack, showRetry = true, showBack = t
         </details>
       </motion.div>
     </div>
-  )
+  );
 }
 
-export default ErrorMessage
+export default ErrorMessage;
