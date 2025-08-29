@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "node utils/postGrouping.test.js"
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "framer-motion": "^11.0.0",
@@ -21,6 +22,7 @@
   "devDependencies": {
     "eslint": "^8.57.0",
     "eslint-config-next": "14.0.0",
-    "ignore-loader": "^0.1.2"
+    "ignore-loader": "^0.1.2",
+    "vitest": "^3.2.4"
   }
 }
