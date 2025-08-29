@@ -63,3 +63,42 @@ if (date) {
   console.log(date.toLocaleDateString())
 }
 ```
+
+## Post Grouping (`postGrouping.js`)
+
+Utility functions for organizing social media posts and their reply relationships.
+
+### Functions
+
+#### `groupRepliesWithParents(posts)`
+Groups reply posts under their parent posts and sorts them appropriately for timeline display.
+
+**Behavior**:
+- Parent posts are sorted by timestamp (newest first)
+- Replies are grouped immediately after their parent posts
+- Within each parent group, replies are sorted chronologically (oldest first)
+- Orphaned replies (replies to posts not in the feed) are included at the end
+- Does not mutate the input array
+
+**Parameters**:
+- `posts`: Array of post objects with the following structure:
+  - `id`: Unique identifier (typically timestamp string)
+  - `isReply`: Boolean indicating if this is a reply
+  - `replyTo`: ID of the parent post (if this is a reply)
+  - Other post properties (content, user, etc.)
+
+**Returns**: New array of posts organized with replies grouped under their parents.
+
+### Usage Example
+```javascript
+import { groupRepliesWithParents } from './postGrouping.js'
+
+const posts = [
+  { id: '2025-01-01T10:00:00+00:00', content: 'Original post', isReply: false },
+  { id: '2025-01-01T11:00:00+00:00', content: 'Reply', isReply: true, replyTo: '2025-01-01T10:00:00+00:00' },
+  { id: '2025-01-02T10:00:00+00:00', content: 'Another post', isReply: false }
+]
+
+const grouped = groupRepliesWithParents(posts)
+// Result: [newer post, original post, reply, ...]
+```
