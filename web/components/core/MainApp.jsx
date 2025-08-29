@@ -1,87 +1,49 @@
-'use client'
-import { useState, useEffect } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
-import { motion, AnimatePresence } from 'framer-motion'
-import { fetchOrgSocial, fetchFollowedUsers } from '../../utils/apiClient'
-import { groupRepliesWithParents } from '../../utils/postGrouping'
-import Header from '../ui/Header'
-import Timeline from './Timeline'
-import Profile from './Profile'
-import LoadingSpinner from '../ui/LoadingSpinner'
-import ErrorMessage from '../ui/ErrorMessage'
-
+'use client';
+import { useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { motion, AnimatePresence } from 'framer-motion';
+import { fetchOrgSocial, fetchFollowedUsers } from '../../utils/apiClient';
+import { groupRepliesWithParents } from '../../utils/postGrouping';
+import Header from '../ui/Header';
+import Timeline from './Timeline';
+import Profile from './Profile';
+import LoadingSpinner from '../ui/LoadingSpinner';
+import ErrorMessage from '../ui/ErrorMessage';
 
 function MainApp({ url, onBack }) {
-  const router = useRouter()
-  const searchParams = useSearchParams()
-  const [mainUser, setMainUser] = useState(null)
-  const [followedUsers, setFollowedUsers] = useState([])
-  const [allPosts, setAllPosts] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [mainUser, setMainUser] = useState(null);
+  const [followedUsers, setFollowedUsers] = useState([]);
+  const [allPosts, setAllPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   // Get current view and selected user from URL params
-  const currentView = searchParams.get('view') || 'timeline'
-  const selectedUserNick = searchParams.get('user')
-  
+  const currentView = searchParams.get('view') || 'timeline';
+  const selectedUserNick = searchParams.get('user');
+
   // Find the selected user object based on the URL parameter
-  const selectedUser = selectedUserNick 
+  const selectedUser = selectedUserNick
     ? [mainUser, ...followedUsers].find(user => user?.nick === selectedUserNick)
-    : null
-
-  useEffect(() => {
-    loadOrgSocial()
-  }, [url])
-
-  // Set initial URL state when entering the app
-  useEffect(() => {
-    if (!searchParams.get('view') && mainUser) {
-      const params = new URLSearchParams(searchParams)
-      params.set('view', 'timeline')
-      params.set('user', mainUser.nick)
-      router.push(`?${params.toString()}`)
-    }
-  }, [mainUser])
-
-  // Handle browser back/forward navigation
-  useEffect(() => {
-    const handlePopState = (event) => {
-      // Check the current URL state
-      const currentUrl = new URL(window.location)
-      const urlParam = currentUrl.searchParams.get('url')
-      const viewParam = currentUrl.searchParams.get('view')
-      
-      // If there's no URL param, we should go back to URL input
-      if (!urlParam) {
-        onBack()
-        return
-      }
-      
-      // Don't interfere with normal back navigation - let the URL params handle the state
-      // The components will re-render based on the new URL parameters automatically
-    }
-
-    window.addEventListener('popstate', handlePopState)
-    return () => window.removeEventListener('popstate', handlePopState)
-  }, [onBack])
-
+    : null;
 
   const loadOrgSocial = async () => {
-    setLoading(true)
-    setError(null)
-    
+    setLoading(true);
+    setError(null);
+
     try {
       // Load main user
-      const user = await fetchOrgSocial(url)
-      setMainUser(user)
-      
+      const user = await fetchOrgSocial(url);
+      setMainUser(user);
+
       // Load followed users
-      const followed = await fetchFollowedUsers(user)
-      setFollowedUsers(followed)
-      
+      const followed = await fetchFollowedUsers(user);
+      setFollowedUsers(followed);
+
       // Combine all posts
-      const posts = []
-      
+      const posts = [];
+
       // Add main user's posts (filter out invalid dates)
       user.posts.forEach(post => {
         if (post.parsedDate) {
@@ -89,10 +51,10 @@ function MainApp({ url, onBack }) {
             ...post,
             user: user,
             sourceUrl: url
-          })
+          });
         }
-      })
-      
+      });
+
       // Add followed users' posts (filter out invalid dates)
       followed.forEach(followedUser => {
         followedUser.posts.forEach(post => {
@@ -101,65 +63,99 @@ function MainApp({ url, onBack }) {
               ...post,
               user: followedUser,
               sourceUrl: followedUser.sourceUrl
-            })
+            });
           }
-        })
-      })
-      
+        });
+      });
+
       // Group replies under their parent posts
-      const groupedPosts = groupRepliesWithParents(posts)
-      setAllPosts(groupedPosts)
-      
+      const groupedPosts = groupRepliesWithParents(posts);
+      setAllPosts(groupedPosts);
+
     } catch (err) {
-      console.error('Error loading org-social data:', err)
-      setError(err.message || 'Failed to load org-social data')
+      setError(err.message || 'Failed to load org-social data');
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
+
+  useEffect(() => {
+    loadOrgSocial();
+  }, [url, loadOrgSocial]);
+
+  // Set initial URL state when entering the app
+  useEffect(() => {
+    if (!searchParams.get('view') && mainUser) {
+      const params = new URLSearchParams(searchParams);
+      params.set('view', 'timeline');
+      params.set('user', mainUser.nick);
+      router.push(`?${params.toString()}`);
+    }
+  }, [mainUser, router, searchParams]);
+
+  // Handle browser back/forward navigation
+  useEffect(() => {
+    const handlePopState = () => {
+      // Check the current URL state
+      const currentUrl = new URL(window.location);
+      const urlParam = currentUrl.searchParams.get('url');
+
+      // If there's no URL param, we should go back to URL input
+      if (!urlParam) {
+        onBack();
+        return;
+      }
+
+      // Don't interfere with normal back navigation - let the URL params handle the state
+      // The components will re-render based on the new URL parameters automatically
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [onBack]);
 
   const handleProfileClick = (user) => {
-    const params = new URLSearchParams(searchParams)
-    params.set('view', 'profile')
-    params.set('user', user.nick)
-    
+    const params = new URLSearchParams(searchParams);
+    params.set('view', 'profile');
+    params.set('user', user.nick);
+
     // Always use push to create proper browser history entries
-    router.push(`?${params.toString()}`)
-  }
+    router.push(`?${params.toString()}`);
+  };
 
   const handleBack = () => {
     // Let the browser handle back navigation naturally
-    window.history.back()
-  }
+    window.history.back();
+  };
 
   const handleRefresh = () => {
-    loadOrgSocial()
-  }
+    loadOrgSocial();
+  };
 
   if (loading) {
-    return <LoadingSpinner message="Loading org-social feed..." />
+    return <LoadingSpinner message="Loading org-social feed..." />;
   }
 
   if (error) {
     return (
-      <ErrorMessage 
+      <ErrorMessage
         message={error}
         onRetry={handleRefresh}
         onBack={onBack}
       />
-    )
+    );
   }
 
   return (
     <div className="main-app">
-      <Header 
+      <Header
         user={mainUser}
         onBack={handleBack}
         onRefresh={handleRefresh}
         title={currentView === 'profile' ? selectedUser?.nick : 'Timeline'}
         showBackButton={true}
       />
-      
+
       <AnimatePresence mode="wait">
         {currentView === 'timeline' ? (
           <motion.div
@@ -169,7 +165,7 @@ function MainApp({ url, onBack }) {
             exit={{ opacity: 0, x: -20 }}
             transition={{ duration: 0.3 }}
           >
-            <Timeline 
+            <Timeline
               posts={selectedUser ? allPosts.filter(post => post.user.nick === selectedUser.nick) : allPosts}
               users={[mainUser, ...followedUsers]}
               onProfileClick={handleProfileClick}
@@ -183,7 +179,7 @@ function MainApp({ url, onBack }) {
             exit={{ opacity: 0, x: 20 }}
             transition={{ duration: 0.3 }}
           >
-            <Profile 
+            <Profile
               user={selectedUser}
               posts={allPosts.filter(post => post.user.nick === selectedUser?.nick)}
               onProfileClick={handleProfileClick}
@@ -193,7 +189,7 @@ function MainApp({ url, onBack }) {
         )}
       </AnimatePresence>
     </div>
-  )
+  );
 }
 
-export default MainApp
+export default MainApp;

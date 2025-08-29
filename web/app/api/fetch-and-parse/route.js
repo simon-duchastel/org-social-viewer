@@ -37,7 +37,6 @@ export async function GET(request) {
       }
     );
   } catch (error) {
-    console.error('Fetch and parse error:', error);
     return new Response(
       JSON.stringify({ error: error.message || 'Failed to fetch and parse org-social file' }),
       {

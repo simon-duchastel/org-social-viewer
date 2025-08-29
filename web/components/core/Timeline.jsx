@@ -1,69 +1,77 @@
-'use client'
-import { useState, useEffect, useRef, useCallback } from 'react'
-import { motion } from 'framer-motion'
-import Post from '../ui/Post'
-import LoadingSpinner from '../ui/LoadingSpinner'
-import styles from './Timeline.module.css'
+'use client';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import { motion } from 'framer-motion';
+import Post from '../ui/Post';
+import LoadingSpinner from '../ui/LoadingSpinner';
+import styles from './Timeline.module.css';
 
-const POSTS_PER_PAGE = 20
+const POSTS_PER_PAGE = 20;
 
 function Timeline({ posts, users, onProfileClick }) {
-  const [displayedPosts, setDisplayedPosts] = useState([])
-  const [currentPage, setCurrentPage] = useState(1)
-  const [loading, setLoading] = useState(false)
-  const [hasMore, setHasMore] = useState(true)
-  const observerRef = useRef()
-  const timelineRef = useRef()
+  const [displayedPosts, setDisplayedPosts] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const observerRef = useRef();
+  const timelineRef = useRef();
 
   // Reset when posts change
   useEffect(() => {
-    setCurrentPage(1)
-    setDisplayedPosts(posts.slice(0, POSTS_PER_PAGE))
-    setHasMore(posts.length > POSTS_PER_PAGE)
-  }, [posts])
+    setCurrentPage(1);
+    setDisplayedPosts(posts.slice(0, POSTS_PER_PAGE));
+    setHasMore(posts.length > POSTS_PER_PAGE);
+  }, [posts]);
+
+  const loadMorePosts = useCallback(() => {
+    if (loading || !hasMore) {
+      return;
+    }
+
+    setLoading(true);
+
+    // Simulate loading delay for smooth UX
+    setTimeout(() => {
+      const nextPage = currentPage + 1;
+      const startIndex = (nextPage - 1) * POSTS_PER_PAGE;
+      const endIndex = startIndex + POSTS_PER_PAGE;
+      const newPosts = posts.slice(startIndex, endIndex);
+
+      if (newPosts.length > 0) {
+        setDisplayedPosts(prev => [...prev, ...newPosts]);
+        setCurrentPage(nextPage);
+        setHasMore(endIndex < posts.length);
+      } else {
+        setHasMore(false);
+      }
+
+      setLoading(false);
+    }, 500);
+  }, [posts, currentPage, loading, hasMore]);
 
   // Infinite scroll observer
   const lastPostElementRef = useCallback(node => {
-    if (loading) return
-    if (observerRef.current) observerRef.current.disconnect()
-    
+    if (loading) {
+      return;
+    }
+    if (observerRef.current) {
+      observerRef.current.disconnect();
+    }
+
     observerRef.current = new IntersectionObserver(entries => {
       if (entries[0].isIntersecting && hasMore) {
-        loadMorePosts()
+        loadMorePosts();
       }
-    }, { threshold: 0.1 })
-    
-    if (node) observerRef.current.observe(node)
-  }, [loading, hasMore])
+    }, { threshold: 0.1 });
 
-  const loadMorePosts = useCallback(() => {
-    if (loading || !hasMore) return
-    
-    setLoading(true)
-    
-    // Simulate loading delay for smooth UX
-    setTimeout(() => {
-      const nextPage = currentPage + 1
-      const startIndex = (nextPage - 1) * POSTS_PER_PAGE
-      const endIndex = startIndex + POSTS_PER_PAGE
-      const newPosts = posts.slice(startIndex, endIndex)
-      
-      if (newPosts.length > 0) {
-        setDisplayedPosts(prev => [...prev, ...newPosts])
-        setCurrentPage(nextPage)
-        setHasMore(endIndex < posts.length)
-      } else {
-        setHasMore(false)
-      }
-      
-      setLoading(false)
-    }, 500)
-  }, [posts, currentPage, loading, hasMore])
+    if (node) {
+      observerRef.current.observe(node);
+    }
+  }, [loading, hasMore, loadMorePosts]);
 
   if (posts.length === 0) {
     return (
       <div className={styles.timelineEmpty}>
-        <motion.div 
+        <motion.div
           className={styles.emptyState}
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -74,49 +82,49 @@ function Timeline({ posts, users, onProfileClick }) {
           <p>This org-social feed doesn&apos;t have any posts yet, or they couldn&apos;t be loaded.</p>
         </motion.div>
       </div>
-    )
+    );
   }
 
   return (
     <div className={styles.timeline} ref={timelineRef}>
-      <motion.div 
+      <motion.div
         className={styles.timelineContent}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.4 }}
       >
         {displayedPosts.map((post, index) => {
-          const isLast = index === displayedPosts.length - 1
-          
+          const isLast = index === displayedPosts.length - 1;
+
           return (
             <motion.div
               key={`${post.user.nick}-${post.id || post.timestamp}-${index}`}
               ref={isLast ? lastPostElementRef : null}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ 
-                duration: 0.3, 
+              transition={{
+                duration: 0.3,
                 delay: index < 10 ? index * 0.05 : 0 // Stagger first 10 posts
               }}
               className={styles.timelinePost}
             >
-              <Post 
+              <Post
                 post={post}
                 onProfileClick={onProfileClick}
                 allUsers={users}
               />
             </motion.div>
-          )
+          );
         })}
-        
+
         {loading && (
           <div className={styles.timelineLoading}>
             <LoadingSpinner size="small" message="Loading more posts..." />
           </div>
         )}
-        
+
         {!hasMore && displayedPosts.length > 0 && (
-          <motion.div 
+          <motion.div
             className={styles.timelineEnd}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -131,7 +139,7 @@ function Timeline({ posts, users, onProfileClick }) {
         )}
       </motion.div>
     </div>
-  )
+  );
 }
 
-export default Timeline
+export default Timeline;

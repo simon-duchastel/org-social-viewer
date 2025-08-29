@@ -27,7 +27,6 @@ export async function POST(request) {
       }
     );
   } catch (error) {
-    console.error('Fetch followed users error:', error);
     return new Response(
       JSON.stringify({ error: error.message || 'Failed to fetch followed users' }),
       {

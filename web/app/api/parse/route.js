@@ -23,7 +23,6 @@ export async function POST(request) {
       }
     );
   } catch (error) {
-    console.error('Parse error:', error);
     return new Response(
       JSON.stringify({ error: error.message || 'Failed to parse org-social content' }),
       {
