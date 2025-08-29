@@ -21,7 +21,7 @@
 ## Development Tools
 - **ESLint** - Code linting with Next.js config
 - **Next.js Dev Server** - Hot reload development
-- Custom test runner - No external testing framework
+- **Vitest** - Fast test runner with native ES modules support
 
 ## Build System
 - **Next.js Build** - Production optimization
