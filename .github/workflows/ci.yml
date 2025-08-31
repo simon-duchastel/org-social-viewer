@@ -61,6 +61,10 @@ jobs:
         working-directory: ./lib/org-social-parser-js
         run: npm ci
       
+      - name: Lint library
+        working-directory: ./lib/org-social-parser-js
+        run: npm run lint
+      
       - name: Run tests
         working-directory: ./lib/org-social-parser-js
         run: npm test

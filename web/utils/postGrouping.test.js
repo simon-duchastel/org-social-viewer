@@ -33,7 +33,7 @@ describe('groupRepliesWithParents', () => {
     const posts = [
       createPost('2025-01-01T10:00:00+00:00'), // Parent
       createPost('2025-01-01T11:00:00+00:00', true, '2025-01-01T10:00:00+00:00'), // Reply
-      createPost('2025-01-02T10:00:00+00:00'), // Another parent
+      createPost('2025-01-02T10:00:00+00:00') // Another parent
     ]
 
     const result = groupRepliesWithParents(posts)
@@ -53,7 +53,7 @@ describe('groupRepliesWithParents', () => {
     const posts = [
       createPost('2025-01-01T10:00:00+00:00'), // Parent
       createPost('2025-01-01T12:00:00+00:00', true, '2025-01-01T10:00:00+00:00'), // Later reply
-      createPost('2025-01-01T11:00:00+00:00', true, '2025-01-01T10:00:00+00:00'), // Earlier reply
+      createPost('2025-01-01T11:00:00+00:00', true, '2025-01-01T10:00:00+00:00') // Earlier reply
     ]
 
     const result = groupRepliesWithParents(posts)
@@ -74,7 +74,7 @@ describe('groupRepliesWithParents', () => {
       createPost('2025-01-02T10:00:00+00:00'), // Parent B (newer)
       createPost('2025-01-01T11:00:00+00:00', true, '2025-01-01T10:00:00+00:00'), // Reply to A
       createPost('2025-01-02T11:00:00+00:00', true, '2025-01-02T10:00:00+00:00'), // Reply to B
-      createPost('2025-01-01T12:00:00+00:00', true, '2025-01-01T10:00:00+00:00'), // Another reply to A
+      createPost('2025-01-01T12:00:00+00:00', true, '2025-01-01T10:00:00+00:00') // Another reply to A
     ]
 
     const result = groupRepliesWithParents(posts)
@@ -95,7 +95,7 @@ describe('groupRepliesWithParents', () => {
     const posts = [
       createPost('2025-01-01T10:00:00+00:00'), // Parent
       createPost('2025-01-01T11:00:00+00:00', true, '2025-01-01T10:00:00+00:00'), // Reply to parent
-      createPost('2025-01-01T12:00:00+00:00', true, 'non-existent-post'), // Orphaned reply
+      createPost('2025-01-01T12:00:00+00:00', true, 'non-existent-post') // Orphaned reply
     ]
 
     const result = groupRepliesWithParents(posts)
@@ -126,7 +126,7 @@ describe('groupRepliesWithParents', () => {
   test('all replies orphaned', () => {
     const posts = [
       createPost('2025-01-01T11:00:00+00:00', true, 'missing-parent-1'),
-      createPost('2025-01-01T12:00:00+00:00', true, 'missing-parent-2'),
+      createPost('2025-01-01T12:00:00+00:00', true, 'missing-parent-2')
     ]
 
     const result = groupRepliesWithParents(posts)
@@ -142,7 +142,7 @@ describe('groupRepliesWithParents', () => {
       createPost('2025-01-01T10:00:00+00:00'), // Normal parent
       { id: '2025-01-01T11:00:00+00:00', content: 'Post with undefined isReply', user: { nick: 'test' } }, // undefined isReply
       { id: '2025-01-01T12:00:00+00:00', content: 'Post with null replyTo', isReply: true, replyTo: null, user: { nick: 'test' } }, // null replyTo
-      { id: '2025-01-01T13:00:00+00:00', content: 'Post with empty replyTo', isReply: true, replyTo: '', user: { nick: 'test' } }, // empty replyTo
+      { id: '2025-01-01T13:00:00+00:00', content: 'Post with empty replyTo', isReply: true, replyTo: '', user: { nick: 'test' } } // empty replyTo
     ]
 
     const result = groupRepliesWithParents(posts)
@@ -153,7 +153,7 @@ describe('groupRepliesWithParents', () => {
     const resultIds = result.map(p => p.id)
     expect(resultIds).toEqual([
       '2025-01-01T13:00:00+00:00',
-      '2025-01-01T12:00:00+00:00', 
+      '2025-01-01T12:00:00+00:00',
       '2025-01-01T11:00:00+00:00',
       '2025-01-01T10:00:00+00:00'
     ])
@@ -162,7 +162,7 @@ describe('groupRepliesWithParents', () => {
   test('does not mutate input', () => {
     const originalPosts = [
       createPost('2025-01-01T10:00:00+00:00'),
-      createPost('2025-01-01T11:00:00+00:00', true, '2025-01-01T10:00:00+00:00'),
+      createPost('2025-01-01T11:00:00+00:00', true, '2025-01-01T10:00:00+00:00')
     ]
     const originalLength = originalPosts.length
     const originalFirstId = originalPosts[0].id
