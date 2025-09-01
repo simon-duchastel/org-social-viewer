@@ -4,7 +4,24 @@ import ViewSourceButton from './ViewSourceButton';
 import Image from 'next/image';
 import styles from './Post.module.css';
 
-function Post({ post, onProfileClick, allUsers }) {
+function Post({ post, onProfileClick, allUsers, isRepliedTo, isChainedReply }) {
+  const getArticleClassName = () => {
+    const classes = [styles.post];
+    if (isChainedReply) {
+      classes.push(styles.chainedReply);
+    } else if (post.isReply) {
+      classes.push(styles.postReply);
+    }
+
+    if (post.isPoll) {
+      classes.push(styles.postPoll);
+    }
+
+    if (isRepliedTo) {
+      classes.push(styles.postRepliedTo);
+    }
+    return classes.join(' ');
+  };
 
   const renderContent = (content) => {
     if (!content) {
@@ -49,7 +66,7 @@ function Post({ post, onProfileClick, allUsers }) {
 
   return (
     <motion.article
-      className={`${styles.post} ${post.isReply ? styles.postReply : ''} ${post.isPoll ? styles.postPoll : ''}`}
+      className={getArticleClassName()}
       onClick={handlePostClick}
       whileHover={{ backgroundColor: 'var(--twitter-hover-bg)' }}
       transition={{ duration: 0.1 }}
