@@ -38,6 +38,26 @@
   border-radius: 0 12px 12px 0;
 }
 
+/* For posts that are being replied to by the next post */
+.postRepliedTo {
+  margin-bottom: 0;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+/* For replies that are visually connected to a parent post */
+.chainedReply {
+  margin-left: 2rem;
+  border-left: 3px solid var(--twitter-blue);
+  border-radius: 0 12px 12px 0;
+
+  /* Adjustments for seamless connection */
+  margin-top: 0;
+  border-top: none;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
 .postPoll {
   border: 2px solid var(--twitter-warning);
   background: rgba(255, 173, 31, 0.03);
