@@ -32,21 +32,21 @@
   transform: translateY(-1px);
 }
 
-.postReply {
+.post.postReply {
   margin-left: 2rem;
   border-left: 3px solid var(--twitter-blue);
   border-radius: 0 12px 12px 0;
 }
 
 /* For posts that are being replied to by the next post */
-.postRepliedTo {
+.post.postRepliedTo {
   margin-bottom: 0;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
 
 /* For replies that are visually connected to a parent post */
-.chainedReply {
+.post.chainedReply {
   margin-left: 2rem;
   border-left: 3px solid var(--twitter-blue);
   border-radius: 0 12px 12px 0;
@@ -56,8 +56,6 @@
   border-top: none;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
-  position: relative;
-  top: -1px; /* Overlap with parent's bottom border */
 }
 
 .postPoll {
