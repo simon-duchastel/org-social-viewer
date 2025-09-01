@@ -101,14 +101,15 @@ function Timeline({ posts, users, onProfileClick }) {
           const nextPost = index < displayedPosts.length - 1 ? displayedPosts[index + 1] : null;
 
           // This post is being replied to if the next post is a reply to it
-          const isRepliedTo = nextPost?.isReply && nextPost?.replyTo === post.id;
+          const isRepliedTo = nextPost?.isReply && nextPost?.replyTo?.trim() === post.id?.trim();
 
           // This post is part of a reply chain if it's a reply and the previous post
           // is either its parent or a sibling reply.
           const isChainedReply =
             post.isReply &&
             prevPost &&
-            (post.replyTo === prevPost.id || (prevPost.isReply && post.replyTo === prevPost.replyTo));
+            (post.replyTo?.trim() === prevPost.id?.trim() ||
+              (prevPost.isReply && post.replyTo?.trim() === prevPost.replyTo?.trim()));
 
           return (
             <motion.div
